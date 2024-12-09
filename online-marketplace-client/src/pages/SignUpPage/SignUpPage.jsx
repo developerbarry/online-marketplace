@@ -1,17 +1,46 @@
 import { Link } from "react-router";
+import useAuth from "../../hookes/useAuth";
+import toast, { Toaster } from 'react-hot-toast';
+import { updateProfile } from "firebase/auth";
+import auth from "../../firebase/firebase.config";
+
 
 const SIgnUpPage = () => {
 
-    const handleSignUp = (e) => {
+    const { userSignUp } = useAuth();
+
+    const handleSignUp = async (e) => {
         e.preventDefault();
 
         const form = new FormData(e.currentTarget);
         const name = form.get('name');
-        const photoURL = form.get('photo');
+        const photo = form.get('photo');
         const email = form.get('email');
         const password = form.get('password');
 
-        console.log({name, photoURL, email, password})
+        const newUser = { name, photo, email, password };
+
+        try {
+            const result = await userSignUp(email, password)
+            const user = result.user;
+            console.log(user)
+
+            await updateProfile(auth.currentUser, {
+                photoURL: photo,
+                displayName: name
+            })
+
+            toast.success("User successfully created!")
+
+        }
+        catch (error) {
+            console.log(error)
+            if (error) {
+                toast.error("Something went wrong!")
+            }
+        }
+
+
     }
     return (
         <div className='flex justify-center items-center font-onest py-14 min-h-[calc(100vh-486px)]'>
@@ -62,7 +91,7 @@ const SIgnUpPage = () => {
                         <span className='w-1/5 border-b dark:border-gray-400 lg:w-1/4'></span>
                     </div>
                     <form
-                    onSubmit={handleSignUp}
+                        onSubmit={handleSignUp}
                     >
                         <div className='mt-4'>
                             <label
@@ -158,6 +187,8 @@ const SIgnUpPage = () => {
                     }}
                 ></div>
             </div>
+
+            <Toaster />
         </div>
     )
 };
