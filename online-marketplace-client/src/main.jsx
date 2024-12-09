@@ -5,6 +5,9 @@ import { RouterProvider } from 'react-router/dom'
 import { createBrowserRouter } from 'react-router'
 import Root from './layouts/Root/Root'
 import HomePage from './pages/HomePage/HomePage'
+import LogInPage from './pages/LogInPage/LogInPage'
+import SIgnUpPage from './pages/SignUpPage/SIgnUpPage'
+import AuthProvider from './AuthProvider/AuthProvider'
 
 const FallbackComponent = () => <div>Loading...</div>;
 
@@ -12,11 +15,19 @@ const FallbackComponent = () => <div>Loading...</div>;
 const routes = createBrowserRouter([
   {
     path: '/',
-    element: <Root/>,
+    element: <Root />,
     children: [
       {
         index: true,
         element: <HomePage />
+      },
+      {
+        path: 'sign-in',
+        element: <LogInPage />
+      },
+      {
+        path: 'sign-up',
+        element: <SIgnUpPage />
       }
     ]
 
@@ -25,10 +36,9 @@ const routes = createBrowserRouter([
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
+    <AuthProvider>
       <RouterProvider router={routes} />
+    </AuthProvider>
   </StrictMode>,
 )
 
-
-// which one is prefer 
-// if i used v7 then i don't need to upgrading stuff like this

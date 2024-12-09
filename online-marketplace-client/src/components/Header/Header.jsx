@@ -10,7 +10,8 @@ const Header = () => {
             <header className="bg-white shadow font-onest">
                 <div className="relative container mx-auto">
                     <div className=" flex items-center justify-between px-6 py-6">
-                        <h2 className="text-3xl font-bold text-blue-600">Workplace X</h2>
+                        <Link to={'/'}><h2 className="text-3xl font-bold text-blue-600">Workplace X</h2>
+                        </Link>
                         <nav className="hidden md:block space-x-6">
                             <a href="#" className="text-gray-600 text-base font-medium hover:text-blue-600">Home</a>
                             <a href="#" className="text-gray-600 text-base font-medium hover:text-blue-600">About</a>
@@ -45,8 +46,8 @@ const Header = () => {
                             <Link className="mr-auto text-3xl font-bold leading-none">
                                 <h2 className="text-2xl font-bold text-blue-600">Workplace X</h2>
                             </Link>
-                            <button 
-                            onClick={() => setDisplay(false)}
+                            <button
+                                onClick={() => setDisplay(false)}
                             >
                                 <svg className="h-6 w-6 text-gray-400 cursor-pointer hover:text-gray-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"></path>

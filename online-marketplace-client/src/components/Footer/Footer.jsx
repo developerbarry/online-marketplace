@@ -1,10 +1,12 @@
+import { Link } from "react-router";
+
 const Footer = () => {
     return (
         <footer className="bg-white font-onest py-4">
             <div className="md:border-y-2">
                 <div className="flex flex-col md:flex-row gap-8">
                     {/* Logo and Description Section */}
-                    <div className="md:w-[38%] md:border-r-2 pt-12 px-6 md:px-10 lg:px-14">
+                    <div className="md:w-[38%] md:border-r-2 pt-12 md:py-12 px-6 md:px-10 lg:px-14">
                         <h2 className="text-xl font-bold text-gray-900">Workplace X</h2>
                         <p className="text-gray-500 mt-4 w-[90%]">
                             Discover the perfect talent for your tech projects with our curated network of top freelancers. From web developers to creative designers, find professionals with the expertise to meet your business goals. Build your dream team and achieve success with confidence, backed by skilled and dedicated specialists!
@@ -19,7 +21,7 @@ const Footer = () => {
                         </div>
                     </div>
 
-                    <div className="md:w-[60%] flex flex-col justify-between md:flex-row pt-6 px-6 md:px-10 lg:px-14 ">
+                    <div className="md:w-[60%] flex flex-col justify-between md:flex-row pt-6 px-6 md:py-12 md:px-10 lg:px-14 ">
 
                         {/* Main Pages Section */}
                         <div>
@@ -31,8 +33,8 @@ const Footer = () => {
                                 <li>Blog</li>
                                 <li>Blog Post</li>
                                 <li>Freelancers</li>
-                                <li>Freelancer single</li>
-                                <li>Freelancer Category</li>
+                                <li><Link to={"/sign-in"}>Sign In</Link></li>
+                                <li><Link to={"/sign-up"}>Sign Up</Link></li>
                             </ul>
                         </div>
 
