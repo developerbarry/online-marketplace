@@ -1,20 +1,57 @@
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
+import useAuth from "../../hookes/useAuth";
+import toast, { Toaster } from 'react-hot-toast';
+import { useEffect, useState } from "react";
+import SPinner from "../../components/Spinner/SPinner";
+
 
 const LogInPage = () => {
 
 
-    const handleSignIn = (e) => {
+    const { userSignIn } = useAuth();
+    const [spinner, setSpinner] = useState(false)
+    const navigate = useNavigate();
+
+
+    const handleSignIn = async (e) => {
         e.preventDefault();
         const form = new FormData(e.currentTarget);
         const email = form.get('email');
         const password = form.get('password');
-        
-        console.log({email, password})
+
+
+        if (!email || !password) {
+            toast.error('Please fill in all required fields.');
+            return;
+        }
+
+        try {
+
+            setSpinner(true)
+
+            const result = await userSignIn(email, password);
+            console.log(result.user)
+            if (result.user) {
+                toast.success('Successfully Logged In!');
+                navigate('/');
+            }
+        } catch (error) {
+            // Handle specific errors
+            if (error.code === 'auth/user-not-found') {
+                toast.error('User not found.');
+            } else if (error.code === 'auth/too-many-requests') {
+                toast.error('Too many failed attempts. Please try again later.');
+            } else {
+                toast.error('Something went wrong!');
+            }
+        } finally {
+            setSpinner(false)
+        }
     }
 
 
     return (
-        <div className='flex justify-center items-center font-onest py-14 min-h-[calc(100vh-486px)]'>
+        <div className='relative flex justify-center items-center font-onest py-14 min-h-[calc(100vh-486px)]'>
             <div className='flex w-full max-w-sm mx-auto overflow-hidden bg-white rounded-lg shadow-lg  lg:max-w-4xl '>
                 <div
                     className='hidden bg-cover bg-center lg:block lg:w-1/2'
@@ -69,7 +106,7 @@ const LogInPage = () => {
                         <span className='w-1/5 border-b dark:border-gray-400 lg:w-1/4'></span>
                     </div>
                     <form
-                    onSubmit={handleSignIn}
+                        onSubmit={handleSignIn}
                     >
                         <div className='mt-4'>
                             <label
@@ -129,6 +166,14 @@ const LogInPage = () => {
                     </div>
                 </div>
             </div>
+
+            <div className={`${spinner ? 'absolute block bg-gray-200 px-8 py-5' : 'hidden'}`}>
+                {
+                    spinner && <SPinner />
+                }
+            </div>
+
+            <Toaster></Toaster>
         </div>
     )
 };

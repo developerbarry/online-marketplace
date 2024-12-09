@@ -18,7 +18,9 @@ const SIgnUpPage = () => {
         const email = form.get('email');
         const password = form.get('password');
 
-        const newUser = { name, photo, email, password };
+        if (!name || !photoURL || !email || !password) {
+            return toast.error("All fields are required!");
+        }
 
         try {
             const result = await userSignUp(email, password)
@@ -35,8 +37,10 @@ const SIgnUpPage = () => {
         }
         catch (error) {
             console.log(error)
-            if (error) {
-                toast.error("Something went wrong!")
+            if (error.code === "auth/email-already-in-use") {
+                toast.error("Email already in use.");
+            } else {
+                toast.error("Something went wrong");
             }
         }
 
