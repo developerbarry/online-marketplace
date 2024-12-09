@@ -30,7 +30,7 @@ const LogInPage = () => {
             setSpinner(true)
 
             const result = await userSignIn(email, password);
-            console.log(result.user)
+            // console.log(result.user)
             if (result.user) {
                 toast.success('Successfully Logged In!');
                 navigate('/');

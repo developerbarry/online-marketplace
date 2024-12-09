@@ -1,7 +1,9 @@
 import React, { useEffect, useRef, useState } from "react";
+import useAuth from "../../hookes/useAuth";
 
 export default function NavBar() {
   const [dropdownOpen, setDropdownOpen] = useState(false);
+
 
   const trigger = useRef(null);
   const dropdown = useRef(null);

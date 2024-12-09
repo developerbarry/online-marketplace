@@ -1,10 +1,27 @@
 import { Link, NavLink } from "react-router";
 import ProfileDropDown from "../ProfileDropDown/ProfileDropDown";
 import { useState } from "react";
+import useAuth from "../../hookes/useAuth";
+import toast, { Toaster } from 'react-hot-toast';
+
 
 const Header = () => {
-
+    const { user, loading, userSignOut } = useAuth();
     const [display, setDisplay] = useState(false)
+
+
+    const handleSignOut = async () => {
+        try {
+            await userSignOut();
+            toast.success('Successfully Logged Out!');
+        } catch (error) {
+            toast.error("Something went wrong!");
+        }
+    }
+    
+
+
+
     return (
         <>
             <header className="bg-white shadow font-onest">
@@ -20,7 +37,7 @@ const Header = () => {
                             <a href="#" className="text-gray-600 text-base font-medium hover:text-blue-600">Cart (0)</a>
                         </nav>
 
-                        <div className="hidden md:block flex space-x-4">
+                        <div className={`hidden ${user ? 'hidden' : 'md:block'} flex space-x-4`}>
                             <button className="border border-blue-600 text-blue-600 px-6 py-3 rounded-full hover:bg-blue-50">
                                 Apply now
                             </button>
@@ -32,7 +49,11 @@ const Header = () => {
 
                         <button onClick={() => setDisplay(!display)} className="md:hidden"><svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="undefined"><path d="M120-240v-80h720v80H120Zm0-200v-80h720v80H120Zm0-200v-80h720v80H120Z" /></svg></button>
 
-                        {/* <ProfileDropDown /> */}
+                        {
+                            user && <ProfileDropDown  handleSignOut={handleSignOut}/>
+                        }
+
+                        <Toaster />
                     </div>
                 </div>
 
