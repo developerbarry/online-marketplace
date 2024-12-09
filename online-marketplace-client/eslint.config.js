@@ -8,9 +8,7 @@ import daisyui from 'daisyui'
 export default [
   { ignores: ['dist'] },
   {
-    env: {
-      node: true, // Add this to specify that the environment is Node.js
-    },
+    
     files: ['**/*.{js,jsx}'],
     languageOptions: {
       ecmaVersion: 2020,

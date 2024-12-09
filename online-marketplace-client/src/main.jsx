@@ -3,7 +3,8 @@ import { createRoot } from 'react-dom/client'
 import './index.css'
 import { RouterProvider } from 'react-router/dom'
 import { createBrowserRouter } from 'react-router'
-import Navbar from './components/NavBar/NavBar'
+import Root from './layouts/Root/Root'
+import HomePage from './pages/HomePage/HomePage'
 
 const FallbackComponent = () => <div>Loading...</div>;
 
@@ -11,9 +12,13 @@ const FallbackComponent = () => <div>Loading...</div>;
 const routes = createBrowserRouter([
   {
     path: '/',
-    element: <Navbar/>,
-    HydrateFallback: FallbackComponent,
-    loader: () => fetch('https://jsonplaceholder.typicode.com/users')
+    element: <Root/>,
+    children: [
+      {
+        index: true,
+        element: <HomePage />
+      }
+    ]
 
   }
 ])

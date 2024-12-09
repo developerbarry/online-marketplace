@@ -33,7 +33,7 @@ export default function NavBar() {
   });
 
   return (
-    <section className="bg-gray-2 py-20 dark:bg-dark">
+    <div className="bg-gray-2 py-20 dark:bg-dark">
       <div className="container mx-auto">
         <div className="flex justify-between">
           <div className="relative inline-block">
@@ -160,6 +160,6 @@ export default function NavBar() {
           </div>
         </div>
       </div>
-    </section>
+    </div>
   );
 }
