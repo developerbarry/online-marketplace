@@ -2,7 +2,6 @@ import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import 'react-tabs/style/react-tabs.css';
 import JobCard from '../JobCard/JobCard';
 import { useEffect, useState } from 'react';
-import axios from 'axios';
 import useAxiosSecure from '../../useAxiosSecure/useAxiosSecure';
 import SkeletonLoader from '../SkeletonLoader/SkeletonLoader';
 
@@ -64,7 +63,7 @@ const JobCategoriesTab = () => {
                                         ))
                                     ) :
 
-                                        jobs.filter(j => j.job_categories[0] === 'Web Development').map(job => <JobCard key={job._id} />)
+                                        jobs.filter(j => j.job_categories[0] === 'Web Development').map(job => <JobCard key={job._id} job={job} />)
                                 }
                             </div>
                         </TabPanel>
@@ -76,7 +75,7 @@ const JobCategoriesTab = () => {
                                             <SkeletonLoader key={index} />
                                         ))
                                     ) :
-                                        jobs.filter(j => j.job_categories[0] === 'Graphics Design').map(job => <JobCard key={job._id} />)
+                                        jobs.filter(j => j.job_categories[0] === 'Graphics Design').map(job => <JobCard key={job._id} job={job}/>)
                                 }
                             </div>
                         </TabPanel>
@@ -88,7 +87,7 @@ const JobCategoriesTab = () => {
                                             <SkeletonLoader key={index} />
                                         ))
                                     ) :
-                                        jobs.filter(j => j.job_categories[0] === 'Digital Marketing').map(job => <JobCard key={job._id} />)
+                                        jobs.filter(j => j.job_categories[0] === 'Digital Marketing').map(job => <JobCard key={job._id} job={job} />)
                                 }
                             </div>
                         </TabPanel>
