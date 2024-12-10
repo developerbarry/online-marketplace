@@ -9,6 +9,7 @@ import LogInPage from './pages/LogInPage/LogInPage'
 import SIgnUpPage from './pages/SignUpPage/SIgnUpPage'
 import AuthProvider from './AuthProvider/AuthProvider'
 import JobDetails from './components/JobDetails/JobDetails'
+import PrivateRoute from './privateRoute/PrivateRoute'
 
 const FallbackComponent = () => <div>Loading...</div>;
 
@@ -24,7 +25,7 @@ const routes = createBrowserRouter([
       },
       {
         path: '/job/:id',
-        element: <JobDetails />
+        element: <PrivateRoute><JobDetails /></PrivateRoute>
       },
       {
         path: 'sign-in',
