@@ -8,6 +8,7 @@ import HomePage from './pages/HomePage/HomePage'
 import LogInPage from './pages/LogInPage/LogInPage'
 import SIgnUpPage from './pages/SignUpPage/SIgnUpPage'
 import AuthProvider from './AuthProvider/AuthProvider'
+import JobDetails from './components/JobDetails/JobDetails'
 
 const FallbackComponent = () => <div>Loading...</div>;
 
@@ -20,6 +21,10 @@ const routes = createBrowserRouter([
       {
         index: true,
         element: <HomePage />
+      },
+      {
+        path: '/job/:id',
+        element: <JobDetails />
       },
       {
         path: 'sign-in',
