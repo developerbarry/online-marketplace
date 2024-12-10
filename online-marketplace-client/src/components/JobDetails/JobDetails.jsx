@@ -1,5 +1,24 @@
+import { useEffect, useState } from "react";
+import { useParams } from "react-router";
+import useAxiosSecure from "../../useAxiosSecure/useAxiosSecure";
 
 const JobDetails = () => {
+
+    const [job, setJob] = useState({});
+    const secure = useAxiosSecure();
+    const param = useParams();
+
+    useEffect(() => {
+        const individualData = async() => {
+            const result = await secure.get(`/jobs/${param?.id}`)
+            console.log(result)
+            setJob(result.data)
+        }
+
+        individualData()
+    },[])
+
+
     return (
         <section>
             <div className="container mx-auto">
