@@ -1,8 +1,25 @@
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import 'react-tabs/style/react-tabs.css';
 import JobCard from '../JobCard/JobCard';
+import { useEffect, useState } from 'react';
+import axios from 'axios';
+import useAxiosSecure from '../../useAxiosSecure/useAxiosSecure';
 
 const JobCategoriesTab = () => {
+    const [jobs, setJobs] = useState([]);
+    const secure = useAxiosSecure();
+
+    useEffect(() => {
+        const jobDatas = async () => {
+            const result = await secure.get('/jobs');
+            setJobs(result.data);
+            //Here we should used try and catch block for handling the error
+        };
+
+        jobDatas();
+    }, []);
+
+    console.log(jobs)
     return (
         <section className='py-14'>
             <div className='container mx-auto'>
@@ -30,16 +47,25 @@ const JobCategoriesTab = () => {
 
                     <div className='px-4 md:px-4 font-onest'>
                         <TabPanel>
-                            <div className='flex flex-col md:flex-row gap-6'>
-                                <JobCard />
-                                <JobCard />
+                            <div className='grid grid-cols-1 md:grid-cols-2 gap-6'>
+                                {
+                                    jobs.filter(j => j.job_categories[0] === 'Web Development').map(job => <JobCard key={job._id} />)
+                                }
                             </div>
                         </TabPanel>
                         <TabPanel>
-                            <JobCard />
+                            <div className='grid grid-cols-1 md:grid-cols-2 gap-6'>
+                                {
+                                    jobs.filter(j => j.job_categories[0] === 'Graphics Design').map(job => <JobCard key={job._id} />)
+                                }
+                            </div>
                         </TabPanel>
                         <TabPanel>
-                            <JobCard />
+                            <div className='grid grid-cols-1 md:grid-cols-2 gap-6'>
+                                {
+                                    jobs.filter(j => j.job_categories[0] === 'Digital Marketing').map(job => <JobCard key={job._id} />)
+                                }
+                            </div>
                         </TabPanel>
                     </div>
                 </Tabs>
