@@ -4,16 +4,25 @@ import JobCard from '../JobCard/JobCard';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import useAxiosSecure from '../../useAxiosSecure/useAxiosSecure';
+import SkeletonLoader from '../SkeletonLoader/SkeletonLoader';
 
 const JobCategoriesTab = () => {
     const [jobs, setJobs] = useState([]);
+    const [isLoading, setIsLoading] = useState(false);
     const secure = useAxiosSecure();
 
     useEffect(() => {
         const jobDatas = async () => {
-            const result = await secure.get('/jobs');
-            setJobs(result.data);
-            //Here we should used try and catch block for handling the error
+            setIsLoading(true);
+
+            try {
+                const result = await secure.get('/jobs');
+                setJobs(result.data);
+            } catch (error) {
+                console.error('Error fetching jobs:', error);
+            } finally {
+                setIsLoading(false);
+            }
         };
 
         jobDatas();
@@ -49,21 +58,37 @@ const JobCategoriesTab = () => {
                         <TabPanel>
                             <div className='grid grid-cols-1 md:grid-cols-2 gap-6'>
                                 {
-                                    jobs.filter(j => j.job_categories[0] === 'Web Development').map(job => <JobCard key={job._id} />)
+                                    isLoading ? (
+                                        Array(4).fill(null).map((_, index) => (
+                                            <SkeletonLoader key={index} />
+                                        ))
+                                    ) :
+
+                                        jobs.filter(j => j.job_categories[0] === 'Web Development').map(job => <JobCard key={job._id} />)
                                 }
                             </div>
                         </TabPanel>
                         <TabPanel>
                             <div className='grid grid-cols-1 md:grid-cols-2 gap-6'>
                                 {
-                                    jobs.filter(j => j.job_categories[0] === 'Graphics Design').map(job => <JobCard key={job._id} />)
+                                    isLoading ? (
+                                        Array(3).fill(null).map((_, index) => (
+                                            <SkeletonLoader key={index} />
+                                        ))
+                                    ) :
+                                        jobs.filter(j => j.job_categories[0] === 'Graphics Design').map(job => <JobCard key={job._id} />)
                                 }
                             </div>
                         </TabPanel>
                         <TabPanel>
                             <div className='grid grid-cols-1 md:grid-cols-2 gap-6'>
                                 {
-                                    jobs.filter(j => j.job_categories[0] === 'Digital Marketing').map(job => <JobCard key={job._id} />)
+                                    isLoading ? (
+                                        Array(2).fill(null).map((_, index) => (
+                                            <SkeletonLoader key={index} />
+                                        ))
+                                    ) :
+                                        jobs.filter(j => j.job_categories[0] === 'Digital Marketing').map(job => <JobCard key={job._id} />)
                                 }
                             </div>
                         </TabPanel>
