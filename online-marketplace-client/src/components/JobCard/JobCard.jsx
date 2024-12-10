@@ -10,7 +10,7 @@ const JobCard = ({ job }) => {
         <div className="p-4 max-w-2xl border rounded-lg shadow-md bg-white space-y-4">
             <div className="flex flex-col md:flex-row justify-between items-start md:items-center space-y-2 md:space-y-0">
                 <div>
-                    <p className="text-sm text-gray-500">Posted {timeLeft} age</p>
+                    <p className="text-sm text-gray-500">Posted {timeLeft} ago</p>
                     <Link to={`/job/${_id}`} className="text-xl font-semibold">{job_title}</Link>
                 </div>
                 <Link to={`/job/${_id}`} className="px-4 py-2 text-sm font-semibold border border-blue-600 text-blue-600 rounded-lg hover:bg-blue-50">View job</Link>

@@ -1,22 +1,41 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router";
 import useAxiosSecure from "../../useAxiosSecure/useAxiosSecure";
+import { formatDistanceToNow } from 'date-fns';
+
 
 const JobDetails = () => {
 
-    const [job, setJob] = useState({});
+    const [job, setJob] = useState(null);
     const secure = useAxiosSecure();
     const param = useParams();
 
+
+    let timeLeft;
+    if (job?.deadline) {
+        timeLeft = formatDistanceToNow(new Date(job?.deadline), { addSuffix: true });
+
+    }
+
     useEffect(() => {
-        const individualData = async() => {
-            const result = await secure.get(`/jobs/${param?.id}`)
-            console.log(result)
-            setJob(result.data)
+        const individualData = async () => {
+            try {
+                const result = await secure.get(`/jobs/${param?.id}`)
+                setJob(result.data)
+            }
+            catch (error) {
+                console.log(error)
+            }
         }
 
-        individualData()
-    },[])
+        if (param?.id) {
+            individualData()
+
+        }
+
+    }, [param?.id])
+
+
 
 
     return (
@@ -24,35 +43,31 @@ const JobDetails = () => {
             <div className="container mx-auto">
                 <div className="flex flex-col md:flex-row items-center justify-between gap-10 px-6 py-6 md:py-14 font-onest">
                     <div className="w-full">
-                        <h2 className="text-xl font-bold text-gray-800 mb-2">
-                            AWS Solutions Architect Needed for Cloud Infrastructure Design
+                        <h2 className="text-2xl font-semibold text-gray-800 capitalize lg:text-3xl mb-2">
+                            {job?.job_title}
                         </h2>
-                        <p className="text-gray-500 text-sm mb-4">Posted 22 seconds ago • Worldwide</p>
-                        <p className="text-gray-600 text-sm mb-4">
-                            We are seeking an experienced AWS Solutions Architect to design and implement robust cloud
-                            infrastructure solutions for our organization. The ideal candidate will have a deep understanding
-                            of AWS services and best practices to optimize performance, scalability, and security. You will
-                            work closely with our development team to ensure seamless integration and deployment. If you have
-                            a proven track record of delivering AWS solutions, we would love to hear from you!
+                        <p className="text-gray-500 text-sm mb-4">Posted {timeLeft} ago • Worldwide</p>
+                        <p className="text-gray-600 text-sm md:text-base mb-4">
+                           {job?.description}
                         </p>
                         <div className="border-t border-gray-200 pt-4 grid grid-cols-2 gap-4">
                             <div className="flex items-center space-x-2">
                                 <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 16h8m-4-8v8m0-8V8m0-4V8m0 4V4" />
                                 </svg>
-                                <p className="text-gray-700 text-sm">Less than 30 hrs/week</p>
+                                <p className="text-gray-700 text-sm">Less than {job?.estimated_time?.hours_per_week}</p>
                             </div>
                             <div className="flex items-center space-x-2">
                                 <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 12h12M8 6h12m-6 6V4" />
                                 </svg>
-                                <p className="text-gray-700 text-sm">1-3 months</p>
+                                <p className="text-gray-700 text-sm">{job?.estimated_time?.duration}</p>
                             </div>
                             <div className="flex items-center space-x-2">
                                 <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 16h8m0-8h-8m8 4H8m0-8h8m-8 12h8" />
                                 </svg>
-                                <p className="text-gray-700 text-sm">$40.00-$75.00</p>
+                                <p className="text-gray-700 text-sm">${job?.hourly_rate?.min}.00-${job?.hourly_rate?.max}.00</p>
                             </div>
                             <div className="flex items-center space-x-2">
                                 <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -64,23 +79,18 @@ const JobDetails = () => {
                                 <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 16h8m0-8H8m8 4H8m8-8H8" />
                                 </svg>
-                                <p className="text-gray-700 text-sm">Expert</p>
+                                <p className="text-gray-700 text-sm">{job?.job_level}</p>
                             </div>
-                            <div className="flex items-center space-x-2">
-                                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 16h8m0-8H8m8 4H8m8-8H8" />
-                                </svg>
-                                <p className="text-gray-700 text-sm">Ongoing project</p>
-                            </div>
+                            
+                        </div>
 
-                            <div className="flex items-center mb-4">
+                        <div className="flex items-center mt-8">
                                 <img src="https://via.placeholder.com/50" alt="Profile" className="w-12 h-12 rounded-full" />
                                 <div className="ml-4">
                                     <p className="text-lg font-bold">John Doe</p>
                                     <p className="text-sm text-gray-500">john.doe@example.com</p>
                                 </div>
                             </div>
-                        </div>
                     </div>
 
 
