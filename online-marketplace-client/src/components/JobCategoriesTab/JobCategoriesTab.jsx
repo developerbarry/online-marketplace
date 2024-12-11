@@ -63,7 +63,7 @@ const JobCategoriesTab = () => {
                                         ))
                                     ) :
 
-                                        jobs.filter(j => j.job_categories[0] === 'Web Development').map(job => <JobCard key={job._id} job={job} />)
+                                        jobs.filter(j => j.job_categories === 'Web Development').map(job => <JobCard key={job._id} job={job} />)
                                 }
                             </div>
                         </TabPanel>
@@ -75,7 +75,7 @@ const JobCategoriesTab = () => {
                                             <SkeletonLoader key={index} />
                                         ))
                                     ) :
-                                        jobs.filter(j => j.job_categories[0] === 'Graphics Design').map(job => <JobCard key={job._id} job={job}/>)
+                                        jobs.filter(j => j.job_categories === 'Graphics Design').map(job => <JobCard key={job._id} job={job}/>)
                                 }
                             </div>
                         </TabPanel>
@@ -87,7 +87,7 @@ const JobCategoriesTab = () => {
                                             <SkeletonLoader key={index} />
                                         ))
                                     ) :
-                                        jobs.filter(j => j.job_categories[0] === 'Digital Marketing').map(job => <JobCard key={job._id} job={job} />)
+                                        jobs.filter(j => j.job_categories === 'Digital Marketing').map(job => <JobCard key={job._id} job={job} />)
                                 }
                             </div>
                         </TabPanel>

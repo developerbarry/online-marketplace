@@ -37,8 +37,9 @@ const AddJob = () => {
         console.log(newJob)
 
         try{
-            const result = await secure.post('/', newJob)
-            if(result.data.InsertId){
+            const result = await secure.post('/job', newJob)
+            console.log(result.data)
+            if(result.data.insertID){
                 toast.success('Successfully Added!')
             }
         }

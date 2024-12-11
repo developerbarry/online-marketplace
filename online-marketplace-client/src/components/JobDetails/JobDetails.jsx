@@ -20,7 +20,7 @@ const JobDetails = () => {
     useEffect(() => {
         const individualData = async () => {
             try {
-                const result = await secure.get(`/jobs/${param?.id}`)
+                const result = await secure.get(`/job/${param?.id}`)
                 setJob(result.data)
             }
             catch (error) {
