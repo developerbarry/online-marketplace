@@ -38,8 +38,14 @@ async function run() {
         const jobs = database.collection('jobs')
 
         app.get('/jobs', async (req, res) => {
-            const query = jobs.find();
-            const result = await query.toArray();
+
+            let query = {};
+            if(req.query?.email){
+                query = {email: req.query?.email}
+            }
+
+            const cursor = jobs.find(query);
+            const result = await cursor.toArray();
             res.send(result)
         })
 
@@ -49,6 +55,11 @@ async function run() {
             const result = await jobs.findOne(query);
             res.send(result)
         })
+
+        // app.get('/jobs', async(req, res) => {
+        //     const email = req.query
+        //     console.log(email)
+        // }) 
 
 
         app.post('/job', async (req, res) => {
