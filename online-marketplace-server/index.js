@@ -40,8 +40,8 @@ async function run() {
         app.get('/jobs', async (req, res) => {
 
             let query = {};
-            if(req.query?.email){
-                query = {email: req.query?.email}
+            if (req.query?.email) {
+                query = { 'buyer_info.email' : req.query.email }
             }
 
             const cursor = jobs.find(query);

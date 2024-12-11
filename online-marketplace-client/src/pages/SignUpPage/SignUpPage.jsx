@@ -18,7 +18,7 @@ const SIgnUpPage = () => {
         const email = form.get('email');
         const password = form.get('password');
 
-        if (!name || !photoURL || !email || !password) {
+        if (!name || !photo || !email || !password) {
             return toast.error("All fields are required!");
         }
 

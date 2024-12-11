@@ -4,11 +4,13 @@ import "react-datepicker/dist/react-datepicker.css";
 import useAuth from "../../hookes/useAuth";
 import useAxiosSecure from "../../useAxiosSecure/useAxiosSecure";
 import toast, { Toaster } from 'react-hot-toast';
+import { useNavigate } from "react-router";
 
 const AddJob = () => {
     const { user } = useAuth();
     const [startDate, setStartDate] = useState(new Date());
-    const secure = useAxiosSecure()
+    const secure = useAxiosSecure();
+    const navigate = useNavigate();
 
 
     const handleJobAdd = async (e) => {
@@ -40,6 +42,7 @@ const AddJob = () => {
             // console.log(result.data)
             if(result.data.insertedId){
                 toast.success('Successfully Added!')
+                navigate('/my-posted-job')
             }
         }
         catch(error){
