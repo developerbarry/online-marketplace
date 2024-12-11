@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
+import { Link } from "react-router";
 
 export default function ProfileDropDown({ handleSignOut }) {
 
@@ -107,12 +108,12 @@ export default function ProfileDropDown({ handleSignOut }) {
                     </a>
                 </div>
                 <div>
-                    <a
-                        href="#0"
+                    <Link
+                        to={'/add-job'}
                         className="flex w-full items-center justify-between px-4 py-2.5 text-sm font-medium text-dark hover:bg-gray-50 dark:text-white dark:hover:bg-white/5"
                     >
-                        Company profile
-                    </a>
+                        Add Job
+                    </Link>
                     <a
                         href="#0"
                         className="flex w-full items-center justify-between px-4 py-2.5 text-sm font-medium text-dark hover:bg-gray-50 dark:text-white dark:hover:bg-white/5"
