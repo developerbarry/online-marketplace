@@ -6,6 +6,7 @@ import JobDetails from "../components/JobDetails/JobDetails";
 import AddJob from "../pages/AddJob/AddJob";
 import LogInPage from "../pages/LogInPage/LogInPage";
 import SIgnUpPage from "../pages/SignUpPage/SIgnUpPage";
+import MyPostedJob from "../pages/MyPostedJob/MyPostedJob";
 
 const routes = createBrowserRouter([
     {
@@ -23,6 +24,10 @@ const routes = createBrowserRouter([
             {
                 path: 'add-job',
                 element: <PrivateRoute><AddJob /></PrivateRoute>
+            },
+            {
+                path: 'my-posted-job',
+                element: <PrivateRoute><MyPostedJob /></PrivateRoute>
             },
             {
                 path: 'sign-in',

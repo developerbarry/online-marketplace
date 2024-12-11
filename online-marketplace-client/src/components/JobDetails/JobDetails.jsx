@@ -48,7 +48,7 @@ const JobDetails = () => {
                         </h2>
                         <p className="text-gray-500 text-sm mb-4">Posted {timeLeft} ago • Worldwide</p>
                         <p className="text-gray-600 text-sm md:text-base mb-4">
-                           {job?.description}
+                            {job?.description}
                         </p>
                         <div className="border-t border-gray-200 pt-4 grid grid-cols-2 gap-4">
                             <div className="flex items-center space-x-2">
@@ -81,16 +81,16 @@ const JobDetails = () => {
                                 </svg>
                                 <p className="text-gray-700 text-sm">{job?.job_level}</p>
                             </div>
-                            
+
                         </div>
 
                         <div className="flex items-center mt-8">
-                                <img src="https://via.placeholder.com/50" alt="Profile" className="w-12 h-12 rounded-full" />
-                                <div className="ml-4">
-                                    <p className="text-lg font-bold">John Doe</p>
-                                    <p className="text-sm text-gray-500">john.doe@example.com</p>
-                                </div>
+                            <img src="https://via.placeholder.com/50" alt="Profile" className="w-12 h-12 rounded-full" />
+                            <div className="ml-4">
+                                <p className="text-lg font-bold">John Doe</p>
+                                <p className="text-sm text-gray-500">john.doe@example.com</p>
                             </div>
+                        </div>
                     </div>
 
 

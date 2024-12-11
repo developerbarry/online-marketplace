@@ -5,10 +5,10 @@ import { RouterProvider } from 'react-router/dom'
 import AuthProvider from './AuthProvider/AuthProvider'
 import routes from './privateRoute/routes'
 
-const FallbackComponent = () => <div>Loading...</div>;
 
+const root = createRoot(document.getElementById('root'));
 
-createRoot(document.getElementById('root')).render(
+root.render(
   <StrictMode>
     <AuthProvider>
       <RouterProvider router={routes} />

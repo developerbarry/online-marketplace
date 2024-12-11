@@ -114,12 +114,12 @@ export default function ProfileDropDown({ handleSignOut }) {
                     >
                         Add Job
                     </Link>
-                    <a
-                        href="#0"
+                    <Link
+                        to={'/my-posted-job'}
                         className="flex w-full items-center justify-between px-4 py-2.5 text-sm font-medium text-dark hover:bg-gray-50 dark:text-white dark:hover:bg-white/5"
                     >
-                        Team
-                    </a>
+                        My Posted Job
+                    </Link>
                     <a
                         href="#0"
                         className="flex w-full items-center justify-between px-4 py-2.5 text-sm font-medium text-dark hover:bg-gray-50 dark:text-white dark:hover:bg-white/5"
