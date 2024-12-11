@@ -11,7 +11,44 @@ const AddJob = () => {
     const secure = useAxiosSecure()
 
 
-    
+    const handleJobAdd = async (e) => {
+        e.preventDefault()
+        const form = new FormData(e.currentTarget);
+        const job_title = form.get('job_title');
+        const job_level = form.get('job_level');
+        const min = form.get('min_price');
+        const max = form.get('max_price');
+        const hourly_rate = { min, max };
+        const duration = form.get('duration');
+        const hours_per_week = form.get('hours_per_week');
+        const estimated_time = { duration, hours_per_week };
+        const deadline = new Date(startDate).toLocaleDateString();
+        const description = form.get('description');
+        const tags = form.get('tags');
+        const job_tags = tags.split(", ");
+        const job_categories = form.get('category');
+        const buyer_info = {
+            name: user?.displayName,
+            email: user?.email,
+            photo: user?.photoURL
+        }
+
+        const newJob = { job_title, job_level, hourly_rate, estimated_time, deadline, description, job_tags, job_categories, buyer_info }
+        console.log(newJob)
+
+        try{
+            const result = await secure.post('/', newJob)
+            if(result.data.InsertId){
+                toast.success('Successfully Added!')
+            }
+        }
+        catch(error){
+            console.log(error)
+            if(error){
+                toast.error('Something went Wrong!')
+            }
+        }
+    }
 
     return (
         <section>
