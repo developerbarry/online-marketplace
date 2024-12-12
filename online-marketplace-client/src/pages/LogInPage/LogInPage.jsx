@@ -1,4 +1,4 @@
-import { Link, useNavigate } from "react-router";
+import { Link, replace, useLocation, useNavigate } from "react-router";
 import useAuth from "../../hookes/useAuth";
 import toast, { Toaster } from 'react-hot-toast';
 import { useEffect, useState } from "react";
@@ -11,6 +11,7 @@ const LogInPage = () => {
     const { userSignIn } = useAuth();
     const [spinner, setSpinner] = useState(false)
     const navigate = useNavigate();
+    const location = useLocation();
 
 
     const handleSignIn = async (e) => {
@@ -33,7 +34,7 @@ const LogInPage = () => {
             // console.log(result.user)
             if (result.user) {
                 toast.success('Successfully Logged In!');
-                navigate('/');
+                navigate(location?.state ? location?.state : '/', { replace: true });
             }
         } catch (error) {
             // Handle specific errors

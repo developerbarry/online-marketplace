@@ -30,7 +30,7 @@ const Header = () => {
                         <Link to={'/'}><h2 className="text-3xl font-bold text-blue-600">Workplace X</h2>
                         </Link>
                         <nav className="hidden md:block space-x-6">
-                            <a href="#" className="text-gray-600 text-base font-medium hover:text-blue-600">Home</a>
+                            <NavLink to={'/'} className="text-gray-600 text-base font-medium hover:text-blue-600">Home</NavLink>
                             <a href="#" className="text-gray-600 text-base font-medium hover:text-blue-600">About</a>
                             <a href="#" className="text-gray-600 text-base font-medium hover:text-blue-600">Blog</a>
                             <a href="#" className="text-gray-600 text-base font-medium hover:text-blue-600">Pages</a>

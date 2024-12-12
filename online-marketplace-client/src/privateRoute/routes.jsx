@@ -10,11 +10,13 @@ import MyPostedJob from "../pages/MyPostedJob/MyPostedJob";
 import JobUpdate from "../pages/JobUpdate/JobUpdate";
 import MyBids from "../pages/MyBids/MyBids";
 import BidRequests from "../pages/BidRequests/BidRequests";
+import ErrorPage from "../pages/ErrorPage/ErrorPage";
 
 const routes = createBrowserRouter([
     {
         path: '/',
         element: <Root />,
+        errorElement: <ErrorPage />,
         children: [
             {
                 index: true,
