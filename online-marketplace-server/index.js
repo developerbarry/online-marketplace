@@ -94,7 +94,6 @@ async function run() {
 
         // Route for querying bids by email
         app.get('/bids', async (req, res) => {
-            console.log(req.query)
             let query = {};
             if (req?.query?.email) {
                 query = { email: req?.query?.email };
@@ -108,9 +107,8 @@ async function run() {
 
         // Route for querying bids by buyer_info.email
         app.get('/bids/buyer', async (req, res) => {
-            console.log(req.query);
-            let query = {};
 
+            let query = {};
             if (req?.query?.email) {
                 query = { 'buyer_info.email': req.query.email };
             }
