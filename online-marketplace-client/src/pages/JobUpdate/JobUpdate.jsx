@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import toast, { Toaster } from 'react-hot-toast';
 import DatePicker from "react-datepicker";
 import useAuth from '../../hookes/useAuth';
-import { useParams } from 'react-router';
+import { useNavigate, useParams } from 'react-router';
 import useAxiosSecure from '../../useAxiosSecure/useAxiosSecure';
 
 
@@ -12,6 +12,7 @@ const JobUpdate = () => {
     const [startDate, setStartDate] = useState(new Date());
     const param = useParams();
     const secure = useAxiosSecure();
+    const navigate = useNavigate()
 
     useEffect(() => {
         const getData = async () => {
@@ -24,10 +25,52 @@ const JobUpdate = () => {
                 toast.error("Something went Wrong!")
             }
         }
-        getData()
-    }, [])
 
-    console.log(job)
+        if (param?.id) {
+            getData()
+        }
+
+    }, [param?.id])
+
+
+    const handleJobUpdate = async (e) => {
+        e.preventDefault()
+        const form = new FormData(e.currentTarget);
+        const job_title = form.get('job_title');
+        const job_level = form.get('job_level');
+        const min = form.get('min_price');
+        const max = form.get('max_price');
+        const hourly_rate = { min, max };
+        const duration = form.get('duration');
+        const hours_per_week = form.get('hours_per_week');
+        const estimated_time = { duration, hours_per_week };
+        const deadline = new Date(startDate).toLocaleDateString();
+        const description = form.get('description');
+        const tags = form.get('tags');
+        const job_tags = tags.split(", ");
+        const job_categories = form.get('category');
+        const buyer_info = {
+            name: user?.displayName,
+            email: user?.email,
+            photo: user?.photoURL
+        }
+
+        const newJob = { job_title, job_level, hourly_rate, estimated_time, deadline, description, job_tags, job_categories, buyer_info }
+
+        try {
+            const result = await secure.put(`/job/${param?.id}`, newJob);
+            console.log(result.data)
+            if (result.data.modifiedCount > 0) {
+                toast.success("Successfully Updated!")
+                navigate('/my-posted-job')
+            }
+        }
+        catch (error) {
+            toast.error("Something went wrong!")
+        }
+
+    }
+
 
     return (
         <section>
@@ -38,7 +81,7 @@ const JobUpdate = () => {
                             Post a Job
                         </h2>
 
-                        <form>
+                        <form onSubmit={handleJobUpdate}>
                             <div className='grid grid-cols-1 gap-6 mt-4 sm:grid-cols-2'>
                                 <div>
                                     <label className='text-gray-700 ' htmlFor='job_title'>

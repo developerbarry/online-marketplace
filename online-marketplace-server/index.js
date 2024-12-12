@@ -73,12 +73,30 @@ async function run() {
             res.send(result)
         })
 
+        //Update Job
+        app.put('/job/:id', async (req, res) => {
+            const id = req.params.id;
+            const jobInfo = req.body;
+            const filter = { _id: new ObjectId(id) };
+            const options = { upsert: true };
+            const updatedDoc = {
+                $set: {
+                    ...jobInfo
+                }
+            }
+
+            const result = await jobs.updateOne(filter, updatedDoc, options);
+            res.send(result)
+        })
+
+        // Delete Job
         app.delete('/job/:id', async (req, res) => {
             const id = req.params.id;
             const query = { _id: new ObjectId(id) };
             const result = await jobs.deleteOne(query);
             res.send(result)
         })
+
 
 
         // Send a ping to confirm a successful connection
