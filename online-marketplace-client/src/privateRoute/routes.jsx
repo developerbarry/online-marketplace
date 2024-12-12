@@ -7,6 +7,7 @@ import AddJob from "../pages/AddJob/AddJob";
 import LogInPage from "../pages/LogInPage/LogInPage";
 import SIgnUpPage from "../pages/SignUpPage/SIgnUpPage";
 import MyPostedJob from "../pages/MyPostedJob/MyPostedJob";
+import JobUpdate from "../pages/JobUpdate/JobUpdate";
 
 const routes = createBrowserRouter([
     {
@@ -28,6 +29,10 @@ const routes = createBrowserRouter([
             {
                 path: 'my-posted-job',
                 element: <PrivateRoute><MyPostedJob /></PrivateRoute>
+            },
+            {
+                path: '/update/:id',
+                element: <PrivateRoute><JobUpdate /></PrivateRoute>
             },
             {
                 path: 'sign-in',
