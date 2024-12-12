@@ -1,5 +1,32 @@
+import { useEffect, useState } from "react";
+import useAxiosSecure from "../../useAxiosSecure/useAxiosSecure";
+import useAuth from "../../hookes/useAuth";
+import toast, { Toaster } from 'react-hot-toast';
+
 
 const MyBids = () => {
+    const secure = useAxiosSecure();
+    const { user } = useAuth();
+    const [bids, setBids] = useState([]);
+    useEffect(() => {
+        const bidsData = async () => {
+            try {
+                const result = await secure.get(`/bids?email=${user?.email}`)
+                console.log(result.data)
+                setBids(result.data)
+            }
+            catch (error) {
+                toast.error('Something went wrong!')
+            }
+        }
+
+        if (user?.email) {
+            bidsData()
+        }
+    }, [user?.email])
+
+    console.log(bids)
+
     return (
         <section>
             <div className="container mx-auto">
@@ -8,7 +35,7 @@ const MyBids = () => {
                         <h2 className='text-lg font-medium text-gray-800 '>My Bids</h2>
 
                         <span className='px-3 py-1 text-xs text-blue-600 bg-blue-100 rounded-full '>
-                            05 Bid
+                            {bids.length} Bid
                         </span>
                     </div>
 
@@ -136,6 +163,8 @@ const MyBids = () => {
                             </div>
                         </div>
                     </div>
+
+                    <Toaster />
                 </div>
             </div>
         </section>

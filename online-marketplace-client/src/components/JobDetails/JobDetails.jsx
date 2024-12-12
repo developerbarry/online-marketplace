@@ -46,7 +46,7 @@ const JobDetails = () => {
         const form = new FormData(e.currentTarget);
         const job_title = job?.job_title;
         const name = form.get('name');
-        const freelancer_email = user?.email;
+        const email = user?.email;
         const price = form.get('price');
         const bidPrice = price.toString(price);
         const dateline = form.get('deadline');
@@ -54,9 +54,8 @@ const JobDetails = () => {
         const job_category = job?.job_categories;
         const status = 'pending';
         const buyer_info = {
-            name: user?.displayName,
-            email: user?.email,
-            photo: user?.photoURL
+            name: job?.buyer_info?.name,
+            email: job?.buyer_info?.email,
         }
 
         if (job?.buyer_info?.email === user?.email) {
@@ -82,7 +81,7 @@ const JobDetails = () => {
             return;
         }
 
-        const newBid = { job_title, name, freelancer_email, bidPrice, dateline, bid_message, job_category, buyer_info, status };
+        const newBid = { job_title, name, email, bidPrice, dateline, bid_message, job_category, buyer_info, status };
 
         try {
             const result = await secure.post('/bid', newBid);
