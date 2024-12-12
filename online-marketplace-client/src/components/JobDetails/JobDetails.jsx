@@ -37,7 +37,6 @@ const JobDetails = () => {
 
 
 
-
     return (
         <section>
             <div className="container mx-auto">
@@ -85,10 +84,10 @@ const JobDetails = () => {
                         </div>
 
                         <div className="flex items-center mt-8">
-                            <img src="https://via.placeholder.com/50" alt="Profile" className="w-12 h-12 rounded-full" />
+                            <img src={job?.buyer_info?.photo} alt="Profile" className="w-12 h-12 rounded-full" />
                             <div className="ml-4">
-                                <p className="text-lg font-bold">John Doe</p>
-                                <p className="text-sm text-gray-500">john.doe@example.com</p>
+                                <p className="text-lg font-bold">{job?.buyer_info?.name}</p>
+                                <p className="text-sm text-gray-500">{job?.buyer_info?.email}</p>
                             </div>
                         </div>
                     </div>
