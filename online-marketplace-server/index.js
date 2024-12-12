@@ -66,13 +66,6 @@ async function run() {
             res.send(result)
         })
 
-        // Apply bid 
-        app.post('/bid', async (req, res) => {
-            const bid = req.body;
-            const result = await bids.insertOne(bid);
-            res.send(result)
-        })
-
         //Update Job
         app.put('/job/:id', async (req, res) => {
             const id = req.params.id;
@@ -94,6 +87,28 @@ async function run() {
             const id = req.params.id;
             const query = { _id: new ObjectId(id) };
             const result = await jobs.deleteOne(query);
+            res.send(result)
+        })
+
+
+        //Bids
+
+        app.get('/bids', async (req, res) => {
+            console.log(req.query)
+            let query = {};
+            if (req?.query?.email) {
+                query = { email: req?.query?.email };
+            }
+
+            const cursor = bids.find(query);
+            const result = await cursor.toArray();
+            res.send(result)
+        })
+
+        // Apply bid 
+        app.post('/bid', async (req, res) => {
+            const bid = req.body;
+            const result = await bids.insertOne(bid);
             res.send(result)
         })
 
