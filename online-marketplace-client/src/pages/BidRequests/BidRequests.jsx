@@ -32,6 +32,7 @@ const BidRequests = () => {
     const handleAccept = async (id, prevStatus, status) => {
 
         if (prevStatus === status) {
+            toast.error("Already Accepted")
             return;
         }
 
@@ -50,6 +51,30 @@ const BidRequests = () => {
         }
         catch (error) {
             toast.error('Something went wrong!')
+        }
+    }
+
+
+    const handleReject = async (id, prevStatus, status) => {
+        if (prevStatus === status) {
+            toast.error("Already Rejected");
+            return;
+        }
+
+        try {
+            
+            const result = await secure.patch(`/bid/${id}`, { status })
+            if (result.data.modifiedCount > 0) {
+                const remaining = bids.filter(bid => bid._id !== id);
+                const match = bids.find(bid => bid._id === id);
+                match.status = 'Rejected';
+                const newBids = [match, ...remaining]
+                setBids(newBids)
+                toast.success("Rejected")
+            }
+        }
+        catch (error) {
+            toast.error("Something went wrong")
         }
     }
 
@@ -204,8 +229,8 @@ const BidRequests = () => {
                                                                 </button>
                                                                 {/* Reject Button */}
                                                                 <button
-
-                                                                    // disabled={bid.status === 'Complete'}
+                                                                    onClick={() => handleReject(bid?._id, bid?.status, "Rejected")}
+                                                                    disabled={bid.status === 'Complete'}
                                                                     className='disabled:cursor-not-allowed text-gray-500 transition-colors duration-200   hover:text-yellow-500 focus:outline-none'
                                                                 >
                                                                     <svg
