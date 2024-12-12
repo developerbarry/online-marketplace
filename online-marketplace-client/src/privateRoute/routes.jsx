@@ -40,6 +40,10 @@ const routes = createBrowserRouter([
                 element: <PrivateRoute><MyBids /></PrivateRoute>
             },
             {
+                path: 'bid-requests',
+                element: <PrivateRoute><MyBids /></PrivateRoute>
+            },
+            {
                 path: 'sign-in',
                 element: <LogInPage />
             },

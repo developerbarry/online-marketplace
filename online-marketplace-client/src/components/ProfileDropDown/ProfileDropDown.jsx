@@ -128,6 +128,12 @@ export default function ProfileDropDown({ handleSignOut }) {
                     >
                         My Bids
                     </Link>
+                    <Link
+                        to={'/bid-requests'}
+                        className="flex w-full items-center justify-between px-4 py-2.5 text-sm font-medium text-dark hover:bg-gray-50 dark:text-white dark:hover:bg-white/5"
+                    >
+                        Bid Requests
+                    </Link>
                 </div>
                 <div>
                     <a
