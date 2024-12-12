@@ -54,13 +54,14 @@ const JobDetails = () => {
         if (job?.buyer_info?.email === user?.email) {
             toast.error("You can not Apply!");
             return;
-        } else if (!bidPrice > job?.hourly_rate?.min) {
+        } else if (bidPrice <= job?.hourly_rate?.min) {
             toast.error("Please increase your price!");
             return;
-        } else if (!bidPrice < job?.hourly_rate?.max) {
+        } else if (bidPrice >= job?.hourly_rate?.max) {
             toast.error("Please enter a price less than the maximum.");
             return;
-        } else if (dateline <= job?.deadline) {
+        }
+        else if (dateline <= job?.deadline) {
             toast.error("Input a Valid Date!");
             return;
         }
@@ -71,6 +72,9 @@ const JobDetails = () => {
         try {
             const result = await secure.post('/bid', newBid);
             console.log(result.data)
+            if (result.data.insertedId) {
+                toast.success('Successfully Bid!')
+            }
         }
         catch (error) {
             toast.error('Something went wrong!');
@@ -149,7 +153,7 @@ const JobDetails = () => {
 
                                 <div>
                                     <label htmlFor="email" className="block text-base font-medium text-gray-700">Email</label>
-                                    <input type="email" id="email" name="email" required placeholder="Enter your email"
+                                    <input type="email" id="email" name="email" defaultValue={user?.email} disabled required placeholder="Enter your email"
                                         className="mt-1 px-4 py-1.5 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-gray-900" />
                                 </div>
                             </div>
