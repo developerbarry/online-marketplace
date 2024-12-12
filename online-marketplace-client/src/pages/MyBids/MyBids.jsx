@@ -27,6 +27,27 @@ const MyBids = () => {
 
     console.log(bids)
 
+    const handleCompleteJob = async (id) => {
+        try {
+            const result = await secure.patch(`/bid/${id}`, { status: "Complete" })
+            if (result.data.modifiedCount > 0) {
+                const remaining = bids.filter(bid => bid._id !== id);
+                const getMatch = bids.find(bid => bid._id === id);
+                getMatch.status = 'Complete';
+                const newBids = [getMatch, ...remaining];
+                setBids(newBids)
+
+                toast.success("Successfully Completed")
+            }
+
+        }
+        catch (error) {
+            toast.error("Something went wrong")
+        }
+    }
+
+
+    
     return (
         <section>
             <div className="container mx-auto">
@@ -117,28 +138,30 @@ const MyBids = () => {
                                                         <td className='px-4 py-4 text-sm font-medium text-gray-700 whitespace-nowrap'>
 
                                                             <div
-                                                        className={`inline-flex items-center px-3 py-1 rounded-full gap-x-2 ${bid.status === 'pending' &&
-                                                            'bg-yellow-100/60 text-yellow-500'
-                                                            } ${bid.status === 'In Progress' &&
-                                                            'bg-blue-100/60 text-blue-500'
-                                                            } ${bid.status === 'Complete' &&
-                                                            'bg-emerald-100/60 text-emerald-500'
-                                                            } ${bid.status === 'Rejected' &&
-                                                            'bg-red-100/60 text-red-500'
-                                                            }`}
-                                                    >
-                                                        <span
-                                                            className={`h-1.5 w-1.5 rounded-full ${bid.status === 'Pending' && 'bg-yellow-500'
-                                                                } ${bid.status === 'In Progress' && 'bg-blue-500'
-                                                                } ${bid.status === 'Complete' && 'bg-green-500'} ${bid.status === 'Complete' && 'bg-green-500'
-                                                                } ${bid.status === 'Rejected' && 'bg-red-500'} `}
-                                                        ></span>
-                                                        <h2 className='text-sm font-normal '>{bid.status}</h2>
-                                                    </div>
+                                                                className={`inline-flex items-center px-3 py-1 rounded-full gap-x-2 ${bid.status === 'pending' &&
+                                                                    'bg-yellow-100/60 text-yellow-500'
+                                                                    } ${bid.status === 'In Progress' &&
+                                                                    'bg-blue-100/60 text-blue-500'
+                                                                    } ${bid.status === 'Complete' &&
+                                                                    'bg-emerald-100/60 text-emerald-500'
+                                                                    } ${bid.status === 'Rejected' &&
+                                                                    'bg-red-100/60 text-red-500'
+                                                                    }`}
+                                                            >
+                                                                <span
+                                                                    className={`h-1.5 w-1.5 rounded-full ${bid.status === 'Pending' && 'bg-yellow-500'
+                                                                        } ${bid.status === 'In Progress' && 'bg-blue-500'
+                                                                        } ${bid.status === 'Complete' && 'bg-green-500'} ${bid.status === 'Complete' && 'bg-green-500'
+                                                                        } ${bid.status === 'Rejected' && 'bg-red-500'} `}
+                                                                ></span>
+                                                                <h2 className='text-sm font-normal '>{bid.status}</h2>
+                                                            </div>
 
                                                         </td>
                                                         <td className='px-4 py-4 text-sm whitespace-nowrap'>
                                                             <button
+                                                                onClick={() => handleCompleteJob(bid?._id)}
+                                                                disabled={bid.status !== 'In Progress'}
                                                                 title='Mark Complete'
                                                                 className='text-gray-500 transition-colors duration-200   hover:text-red-500 focus:outline-none disabled:cursor-not-allowed'
                                                             >
