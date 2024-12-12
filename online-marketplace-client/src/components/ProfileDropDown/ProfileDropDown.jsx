@@ -135,32 +135,7 @@ export default function ProfileDropDown({ handleSignOut }) {
                         Bid Requests
                     </Link>
                 </div>
-                <div>
-                    <a
-                        href="#0"
-                        className="flex w-full items-center justify-between px-4 py-2.5 text-sm font-medium text-dark hover:bg-gray-50 dark:text-white dark:hover:bg-white/5"
-                    >
-                        Changelog
-                    </a>
-                    <a
-                        href="#0"
-                        className="flex w-full items-center justify-between px-4 py-2.5 text-sm font-medium text-dark hover:bg-gray-50 dark:text-white dark:hover:bg-white/5"
-                    >
-                        Slack Community
-                    </a>
-                    <a
-                        href="#0"
-                        className="flex w-full items-center justify-between px-4 py-2.5 text-sm font-medium text-dark hover:bg-gray-50 dark:text-white dark:hover:bg-white/5"
-                    >
-                        Support
-                    </a>
-                    <a
-                        href="#0"
-                        className="flex w-full items-center justify-between px-4 py-2.5 text-sm font-medium text-dark hover:bg-gray-50 dark:text-white dark:hover:bg-white/5"
-                    >
-                        API
-                    </a>
-                </div>
+
                 <div>
                     <button onClick={handleSignOut} className="flex w-full items-center justify-between px-4 py-2.5 text-sm font-medium text-dark hover:bg-gray-50 dark:text-white dark:hover:bg-white/5">
                         Log out

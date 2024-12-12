@@ -9,6 +9,7 @@ import SIgnUpPage from "../pages/SignUpPage/SIgnUpPage";
 import MyPostedJob from "../pages/MyPostedJob/MyPostedJob";
 import JobUpdate from "../pages/JobUpdate/JobUpdate";
 import MyBids from "../pages/MyBids/MyBids";
+import BidRequests from "../pages/BidRequests/BidRequests";
 
 const routes = createBrowserRouter([
     {
@@ -41,7 +42,7 @@ const routes = createBrowserRouter([
             },
             {
                 path: 'bid-requests',
-                element: <PrivateRoute><MyBids /></PrivateRoute>
+                element: <PrivateRoute><BidRequests /></PrivateRoute>
             },
             {
                 path: 'sign-in',
