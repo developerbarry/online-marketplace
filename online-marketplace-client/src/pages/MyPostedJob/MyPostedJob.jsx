@@ -31,6 +31,21 @@ const MyPostedJob = () => {
 
     // console.log(postedJobs)
 
+    const handleDeleteJob = async (id) => {
+        try {
+            const result = await secure.delete(`/job/${id}`)
+            console.log(result.data)
+            if (result.data.deletedCount > 0) {
+                const remaining = postedJobs.filter(postedJob => postedJob._id !== id);
+                setPostedJobs(remaining)
+                toast.success("Successfully Deleted!")
+            }
+        }
+        catch (error) {
+            toast.error("Something went wrong!")
+        }
+    }
+
     return (
         <section>
             <div className="container mx-auto">
@@ -125,7 +140,7 @@ const MyPostedJob = () => {
                                                         </td>
                                                         <td className='px-4 py-4 text-sm whitespace-nowrap'>
                                                             <div className='flex items-center gap-x-6'>
-                                                                <button className='text-gray-500 transition-colors duration-200   hover:text-red-500 focus:outline-none'>
+                                                                <button onClick={() => handleDeleteJob(postedJob._id)} className='text-gray-500 transition-colors duration-200   hover:text-red-500 focus:outline-none'>
                                                                     <svg
                                                                         xmlns='http://www.w3.org/2000/svg'
                                                                         fill='none'
