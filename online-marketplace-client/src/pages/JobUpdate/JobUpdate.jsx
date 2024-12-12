@@ -48,6 +48,7 @@ const JobUpdate = () => {
                                         id='job_title'
                                         name='job_title'
                                         type='text'
+                                        defaultValue={job?.job_title}
                                         className='block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-200 rounded-md  focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40  focus:outline-none focus:ring'
                                     />
                                 </div>
@@ -71,6 +72,7 @@ const JobUpdate = () => {
                                     <DatePicker
                                         className="px-4 py-2 w-full border border-gray-200 rounded-md"
                                         selected={startDate}
+                                        defaultValue={startDate}
                                         onChange={(date) => setStartDate(date)} />
                                 </div>
 
@@ -81,6 +83,7 @@ const JobUpdate = () => {
                                     <select
                                         name='category'
                                         id='category'
+                                        defaultValue={job?.job_categories}
                                         className='border p-2 rounded-md'
                                     >
                                         <option value='Web Development'>Web Development</option>
@@ -96,6 +99,7 @@ const JobUpdate = () => {
                                         id='min_price'
                                         name='min_price'
                                         type='number'
+                                        defaultValue={job?.hourly_rate?.min}
                                         className='block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-200 rounded-md  focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40  focus:outline-none focus:ring'
                                     />
                                 </div>
@@ -108,6 +112,7 @@ const JobUpdate = () => {
                                         id='max_price'
                                         name='max_price'
                                         type='number'
+                                        defaultValue={job?.hourly_rate?.max}
                                         className='block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-200 rounded-md  focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40  focus:outline-none focus:ring'
                                     />
                                 </div>
@@ -119,6 +124,7 @@ const JobUpdate = () => {
                                         id='job_level'
                                         name='job_level'
                                         type='text'
+                                        defaultValue={job?.job_level}
                                         className='block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-200 rounded-md  focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40  focus:outline-none focus:ring'
                                     />
                                 </div>
@@ -130,6 +136,7 @@ const JobUpdate = () => {
                                         id='duration'
                                         name='duration'
                                         type='text'
+                                        defaultValue={job?.estimated_time?.duration}
                                         className='block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-200 rounded-md  focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40  focus:outline-none focus:ring'
                                     />
                                 </div>
@@ -141,6 +148,7 @@ const JobUpdate = () => {
                                         id='hours_per_week'
                                         name='hours_per_week'
                                         type='text'
+                                        defaultValue={job?.estimated_time?.hours_per_week}
                                         className='block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-200 rounded-md  focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40  focus:outline-none focus:ring'
                                     />
                                 </div>
@@ -152,6 +160,7 @@ const JobUpdate = () => {
                                         id='tags'
                                         name='tags'
                                         type='text'
+                                        defaultValue={job?.job_tags}
                                         className='block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-200 rounded-md  focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40  focus:outline-none focus:ring'
                                     />
                                 </div>
@@ -164,6 +173,7 @@ const JobUpdate = () => {
                                     className='block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-200 rounded-md  focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40  focus:outline-none focus:ring'
                                     name='description'
                                     id='description'
+                                    defaultValue={job?.description}
                                     rows={8}
                                 ></textarea>
                             </div>
