@@ -36,12 +36,13 @@ async function run() {
 
         const database = client.db('marketplaceDB');
         const jobs = database.collection('jobs')
+        const bids = database.collection('bids')
 
         app.get('/jobs', async (req, res) => {
 
             let query = {};
             if (req.query?.email) {
-                query = { 'buyer_info.email' : req.query.email }
+                query = { 'buyer_info.email': req.query.email }
             }
 
             const cursor = jobs.find(query);
@@ -65,6 +66,12 @@ async function run() {
         app.post('/job', async (req, res) => {
             const job = req.body;
             const result = await jobs.insertOne(job);
+            res.send(result)
+        })
+
+        app.post('/bid', async (req, res) => {
+            const bid = req.body;
+            const result = await bids.insertOne(bid);
             res.send(result)
         })
 

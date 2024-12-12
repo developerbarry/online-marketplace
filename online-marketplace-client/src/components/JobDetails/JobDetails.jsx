@@ -2,10 +2,13 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router";
 import useAxiosSecure from "../../useAxiosSecure/useAxiosSecure";
 import { formatDistanceToNow } from 'date-fns';
+import useAuth from "../../hookes/useAuth";
+import toast, { Toaster } from 'react-hot-toast';
 
 
 const JobDetails = () => {
 
+    const { user } = useAuth();
     const [job, setJob] = useState(null);
     const secure = useAxiosSecure();
     const param = useParams();
@@ -34,6 +37,45 @@ const JobDetails = () => {
         }
 
     }, [param?.id])
+
+
+    const handleApplyJob = async (e) => {
+        e.preventDefault();
+
+        const form = new FormData(e.currentTarget);
+        const name = form.get('name');
+        const freelancer_email = user?.email;
+        const price = form.get('price');
+        const bidPrice = price.toString(price);
+        const dateline = form.get('deadline');
+        const bid_message = form.get('message');
+        const buyer_email = job?.buyer_info?.email;
+
+        if (job?.buyer_info?.email === user?.email) {
+            toast.error("You can not Apply!");
+            return;
+        } else if (!bidPrice > job?.hourly_rate?.min) {
+            toast.error("Please increase your price!");
+            return;
+        } else if (!bidPrice < job?.hourly_rate?.max) {
+            toast.error("Please enter a price less than the maximum.");
+            return;
+        } else if (dateline <= job?.deadline) {
+            toast.error("Input a Valid Date!");
+            return;
+        }
+
+
+        const newBid = { name, freelancer_email, bidPrice, dateline, bid_message, buyer_email };
+
+        try {
+            const result = await secure.post('/bid', newBid);
+            console.log(result.data)
+        }
+        catch (error) {
+            toast.error('Something went wrong!');
+        }
+    }
 
 
 
@@ -95,7 +137,9 @@ const JobDetails = () => {
 
                     <div className="w-full">
                         <h2 className="text-2xl font-bold text-gray-800 mb-4">Apply for the Job</h2>
-                        <form action="#" method="POST" className="space-y-4">
+                        <form
+                            onSubmit={handleApplyJob}
+                            className="space-y-4">
                             <div className="grid grid-cols-2 gap-5">
                                 <div>
                                     <label htmlFor="name" className="block text-base font-medium text-gray-700">Name</label>
@@ -140,6 +184,8 @@ const JobDetails = () => {
                                 </button>
                             </div>
                         </form>
+
+                        <Toaster />
                     </div>
                 </div>
             </div>
