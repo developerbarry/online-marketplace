@@ -1,8 +1,10 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Link } from "react-router";
+import useAuth from "../../hookes/useAuth";
 
 export default function ProfileDropDown({ handleSignOut }) {
 
+    const { user } = useAuth();
     const [dropdownOpen, setDropdownOpen] = useState(false);
 
     const trigger = useRef(null);
@@ -71,7 +73,7 @@ export default function ProfileDropDown({ handleSignOut }) {
                 <div className="flex items-center gap-3 px-4 py-3 font-onest">
                     <div className="relative aspect-square w-10 rounded-full">
                         <img
-                            src="https://cdn.tailgrids.com/2.2/assets/core-components/images/account-dropdowns/image-1.jpg"
+                            src={user?.photoURL}
                             alt="account"
                             className="w-full rounded-full object-cover object-center"
                         />
@@ -79,10 +81,10 @@ export default function ProfileDropDown({ handleSignOut }) {
                     </div>
                     <div>
                         <p className="text-sm font-semibold text-dark dark:text-white">
-                            Andrio Miller
+                            {user?.displayName}
                         </p>
                         <p className="text-sm text-body-color text-white">
-                            miller@company.com
+                            {user?.email}
                         </p>
                     </div>
                 </div>
@@ -120,12 +122,12 @@ export default function ProfileDropDown({ handleSignOut }) {
                     >
                         My Posted Job
                     </Link>
-                    <a
-                        href="#0"
+                    <Link
+                        to={'/my-bids'}
                         className="flex w-full items-center justify-between px-4 py-2.5 text-sm font-medium text-dark hover:bg-gray-50 dark:text-white dark:hover:bg-white/5"
                     >
-                        Invite colleagues
-                    </a>
+                        My Bids
+                    </Link>
                 </div>
                 <div>
                     <a

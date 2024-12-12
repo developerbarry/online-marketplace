@@ -8,6 +8,7 @@ import LogInPage from "../pages/LogInPage/LogInPage";
 import SIgnUpPage from "../pages/SignUpPage/SIgnUpPage";
 import MyPostedJob from "../pages/MyPostedJob/MyPostedJob";
 import JobUpdate from "../pages/JobUpdate/JobUpdate";
+import MyBids from "../pages/MyBids/MyBids";
 
 const routes = createBrowserRouter([
     {
@@ -33,6 +34,10 @@ const routes = createBrowserRouter([
             {
                 path: '/update/:id',
                 element: <PrivateRoute><JobUpdate /></PrivateRoute>
+            },
+            {
+                path: 'my-bids',
+                element: <PrivateRoute><MyBids /></PrivateRoute>
             },
             {
                 path: 'sign-in',

@@ -18,7 +18,7 @@ const JobUpdate = () => {
         const getData = async () => {
             try {
                 const result = await secure.get(`/job/${param?.id}`);
-                console.log(result.data)
+                // console.log(result.data)
                 setJob(result.data)
             }
             catch (error) {
@@ -59,7 +59,7 @@ const JobUpdate = () => {
 
         try {
             const result = await secure.put(`/job/${param?.id}`, newJob);
-            console.log(result.data)
+            // console.log(result.data)
             if (result.data.modifiedCount > 0) {
                 toast.success("Successfully Updated!")
                 navigate('/my-posted-job')

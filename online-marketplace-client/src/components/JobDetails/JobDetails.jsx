@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import useAxiosSecure from "../../useAxiosSecure/useAxiosSecure";
 import { formatDistanceToNow } from 'date-fns';
 import useAuth from "../../hookes/useAuth";
@@ -12,6 +12,7 @@ const JobDetails = () => {
     const [job, setJob] = useState(null);
     const secure = useAxiosSecure();
     const param = useParams();
+    const navigate = useNavigate();
 
 
     let timeLeft;
@@ -43,14 +44,20 @@ const JobDetails = () => {
         e.preventDefault();
 
         const form = new FormData(e.currentTarget);
+        const job_title = job?.job_title;
         const name = form.get('name');
         const freelancer_email = user?.email;
         const price = form.get('price');
         const bidPrice = price.toString(price);
         const dateline = form.get('deadline');
         const bid_message = form.get('message');
-        const buyer_email = job?.buyer_info?.email;
+        const job_category = job?.job_categories;
         const status = 'pending';
+        const buyer_info = {
+            name: user?.displayName,
+            email: user?.email,
+            photo: user?.photoURL
+        }
 
         if (job?.buyer_info?.email === user?.email) {
             toast.error("You cannot apply for your own job!");
@@ -75,12 +82,13 @@ const JobDetails = () => {
             return;
         }
 
-        const newBid = { name, freelancer_email, bidPrice, dateline, bid_message, buyer_email, status };
+        const newBid = { job_title, name, freelancer_email, bidPrice, dateline, bid_message, job_category, buyer_info, status };
 
         try {
             const result = await secure.post('/bid', newBid);
             if (result.data.insertedId) {
                 toast.success('Successfully Bid!');
+                navigate('/my-bids')
             }
         } catch (error) {
             toast.error('Something went wrong!');
