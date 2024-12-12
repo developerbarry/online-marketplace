@@ -91,6 +91,7 @@ async function run() {
         })
 
 
+
         // Route for querying bids by email
         app.get('/bids', async (req, res) => {
             console.log(req.query)
@@ -118,6 +119,21 @@ async function run() {
             const result = await cursor.toArray();
             res.send(result);
         });
+
+        app.patch('/bid/:id', async (req, res) => {
+            const id = req.params.id;
+            const bidBody = req.body;
+            const filter = { _id: new ObjectId(id) };
+            const updatedDoc = {
+                $set: {
+                    status: bidBody?.status
+                }
+            }
+
+            const result = await bids.updateOne(filter, updatedDoc);
+            res.send(result)
+        })
+
 
 
 

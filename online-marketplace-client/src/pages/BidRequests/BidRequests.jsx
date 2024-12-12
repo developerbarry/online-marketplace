@@ -27,15 +27,42 @@ const BidRequests = () => {
     }, [user?.email])
 
     console.log(bids)
+
+
+    const handleAccept = async (id, prevStatus, status) => {
+
+        if (prevStatus === status) {
+            return;
+        }
+
+        try {
+            const result = await secure.patch(`/bid/${id}`, { status })
+            console.log(result.data)
+            if (result.data.modifiedCount > 0) {
+                const remaining = bids.filter(bid => bid._id !== id);
+                const match = bids.find(bid => bid._id === id);
+                match.status = 'In Progress';
+                const newBids = [match, ...remaining]
+                setBids(newBids)
+
+                toast.success("Accepted")
+            }
+        }
+        catch (error) {
+            toast.error('Something went wrong!')
+        }
+    }
+
+
     return (
         <section>
             <div className="container mx-auto">
-                <div className="px-4 pt-12 font-onest">
+                <div className="px-4 pt-12 font-onest min-h-[calc(100vh-72px)]">
                     <div className='flex items-center gap-x-3'>
                         <h2 className='text-lg font-medium text-gray-800 '>Bid Requests</h2>
 
                         <span className='px-3 py-1 text-xs text-blue-600 bg-blue-100 rounded-full '>
-                            05 Requests
+                            {bids?.length} Requests
                         </span>
                     </div>
 
@@ -156,8 +183,8 @@ const BidRequests = () => {
                                                             <div className='flex items-center gap-x-6'>
                                                                 {/* Accept Button: In Progress */}
                                                                 <button
-
-                                                                    // disabled={bid.status === 'Complete'}
+                                                                    onClick={() => handleAccept(bid?._id, bid?.status, "In Progress")}
+                                                                    disabled={bid?.status === 'Complete'}
                                                                     className='disabled:cursor-not-allowed text-gray-500 transition-colors duration-200   hover:text-red-500 focus:outline-none'
                                                                 >
                                                                     <svg
