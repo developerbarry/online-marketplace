@@ -2,12 +2,12 @@ import AuthContext from "../context/AuthContext";
 import { createUserWithEmailAndPassword, onAuthStateChanged, signInWithEmailAndPassword, signOut } from "firebase/auth";
 import auth from "../firebase/firebase.config";
 import { useEffect, useState } from "react";
-import useAxiosSecure from "../useAxiosSecure/useAxiosSecure";
+import useAxiosCommon from "../useAxiosSecure/useAxiosCommon";
 
 const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(null);
     const [loading, setLoading] = useState(true)
-    const secure = useAxiosSecure();
+    const secure = useAxiosCommon();
 
     const userSignUp = (email, password) => {
         setLoading(true)

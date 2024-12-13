@@ -91,14 +91,8 @@ async function run() {
         })
 
 
-        app.get('/jobs', verifyToken, async (req, res) => {
-
-            console.log(req.user)
-
-            if(req.user?.email !== req.query?.email){
-                return res.status(403).send({message: "Forbidden"})
-            }
-
+        
+        app.get('/jobs', async (req, res) => {
 
             let query = {};
             if (req.query?.email) {
@@ -151,10 +145,9 @@ async function run() {
         })
 
 
-
         // Route for querying bids by email
         app.get('/bids', verifyToken, async (req, res) => {
-            console.log(req.user)
+
             if(req.user?.email !== req.query?.email){
                 return res.status(403).send({message: "Forbidden"})
             }

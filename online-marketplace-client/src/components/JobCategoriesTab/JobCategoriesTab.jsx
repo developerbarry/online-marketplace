@@ -2,20 +2,20 @@ import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import 'react-tabs/style/react-tabs.css';
 import JobCard from '../JobCard/JobCard';
 import { useEffect, useState } from 'react';
-import useAxiosSecure from '../../useAxiosSecure/useAxiosSecure';
 import SkeletonLoader from '../SkeletonLoader/SkeletonLoader';
+import useAxiosCommon from '../../useAxiosSecure/useAxiosCommon';
 
 const JobCategoriesTab = () => {
     const [jobs, setJobs] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
-    const secure = useAxiosSecure();
+    const axios = useAxiosCommon();
 
     useEffect(() => {
         const jobDatas = async () => {
             setIsLoading(true);
 
             try {
-                const result = await secure.get('/jobs');
+                const result = await axios.get('/jobs');
                 setJobs(result.data);
             } catch (error) {
                 console.error('Error fetching jobs:', error);
@@ -75,7 +75,7 @@ const JobCategoriesTab = () => {
                                             <SkeletonLoader key={index} />
                                         ))
                                     ) :
-                                        jobs.filter(j => j.job_categories === 'Graphics Design').map(job => <JobCard key={job._id} job={job}/>)
+                                        jobs.filter(j => j.job_categories === 'Graphics Design').map(job => <JobCard key={job._id} job={job} />)
                                 }
                             </div>
                         </TabPanel>

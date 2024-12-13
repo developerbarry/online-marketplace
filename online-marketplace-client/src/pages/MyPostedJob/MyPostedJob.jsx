@@ -1,21 +1,21 @@
 import { useEffect, useState } from "react";
-import useAxiosSecure from "../../useAxiosSecure/useAxiosSecure";
 import useAuth from "../../hookes/useAuth";
 import toast, { Toaster } from 'react-hot-toast';
 import { Link } from "react-router";
+import useAxiosCommon from "../../useAxiosSecure/useAxiosCommon";
 
 
 const MyPostedJob = () => {
 
     const { user } = useAuth();
-    const secure = useAxiosSecure();
+    const axios = useAxiosCommon();
     const [postedJobs, setPostedJobs] = useState([])
 
 
     useEffect(() => {
         const postedJobsData = async () => {
             try {
-                const result = await secure.get(`/jobs?email=${user?.email}`)
+                const result = await axios.get(`/jobs?email=${user?.email}`)
                 setPostedJobs(result.data)
             }
             catch (error) {
@@ -35,7 +35,7 @@ const MyPostedJob = () => {
 
     const handleDeleteJob = async (id) => {
         try {
-            const result = await secure.delete(`/job/${id}`)
+            const result = await axios.delete(`/job/${id}`)
             console.log(result.data)
             if (result.data.deletedCount > 0) {
                 const remaining = postedJobs.filter(postedJob => postedJob._id !== id);
