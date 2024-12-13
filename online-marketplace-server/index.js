@@ -2,6 +2,7 @@ const express = require("express");
 const app = express();
 const cors = require("cors");
 const jwt = require("jsonwebtoken");
+var cookieParser = require('cookie-parser');
 const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 require('dotenv').config()
 const port = process.env.PORT || 5000;
@@ -9,17 +10,33 @@ const port = process.env.PORT || 5000;
 const corsOptions = {
     origin: ['http://localhost:5173'],
     credentials: true,
-    // optionsSuccessStatus: 200
+    optionsSuccessStatus: 200
 
 }
 
 //middleware
 app.use(cors(corsOptions));
 app.use(express.json());
+app.use(cookieParser());
 
 
 
 //JWT Middleware
+const verifyToken = async (req, res, next) => {
+    const token = req.cookies.token;
+    if (!token) {
+        return res.status(401).send({ message: "Unauthorized Access" });
+    }
+
+    jwt.verify(token, process.env.TOKEN_SECRECT, (error, decoded) => {
+        if (error) {
+            return res.status(401).send({ message: "Unauthorized Access" });
+        }
+
+        req.user = decoded;
+        next();
+    });
+};
 
 
 
@@ -69,13 +86,19 @@ async function run() {
                 maxAge: 0,
                 path: '/'
             });
-            
+
             res.send({ success: true })
         })
 
 
+        app.get('/jobs', verifyToken, async (req, res) => {
 
-        app.get('/jobs', async (req, res) => {
+            console.log(req.user)
+
+            if(req.user?.email !== req.query?.email){
+                return res.status(403).send({message: "Forbidden"})
+            }
+
 
             let query = {};
             if (req.query?.email) {
@@ -130,10 +153,15 @@ async function run() {
 
 
         // Route for querying bids by email
-        app.get('/bids', async (req, res) => {
+        app.get('/bids', verifyToken, async (req, res) => {
+            console.log(req.user)
+            if(req.user?.email !== req.query?.email){
+                return res.status(403).send({message: "Forbidden"})
+            }
+
             let query = {};
-            if (req?.query?.email) {
-                query = { email: req?.query?.email };
+            if (req.query?.email) {
+                query = { email: req.query?.email };
             }
 
             const cursor = bids.find(query);
