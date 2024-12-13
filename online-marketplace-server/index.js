@@ -51,12 +51,29 @@ async function run() {
                 httpOnly: true,
                 secure: process.env.NODE_ENV === "production",
                 sameSite: process.env.NODE_ENV === "production" ? "none" : "strict",
-                maxAge: 24 * 60 * 60 * 1000
-                // path: '/'
+                maxAge: 24 * 60 * 60 * 1000,
+                path: '/'
             })
 
-            res.send(token)
+            res.send({ success: true })
         })
+
+
+        app.post('/logout', async (req, res) => {
+            const email = req.body;
+            console.log(email)
+            res.clearCookie('token', {
+                httpOnly: true,
+                secure: process.env.NODE_ENV === "production",
+                sameSite: process.env.NODE_ENV === "production" ? "none" : "strict",
+                maxAge: 0,
+                path: '/'
+            });
+            
+            res.send({ success: true })
+        })
+
+
 
         app.get('/jobs', async (req, res) => {
 

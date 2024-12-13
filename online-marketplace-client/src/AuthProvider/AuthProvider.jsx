@@ -27,18 +27,23 @@ const AuthProvider = ({ children }) => {
 
     useEffect(() => {
         const unSubscribe = onAuthStateChanged(auth, async (currentUser) => {
+            const userEmail = currentUser?.email || user?.email;
+            const loggedUser = { email: userEmail };
+
             setUser(currentUser);
             setLoading(false)
 
-            if (currentUser) {
-                try {
-                    const userEmail = { email: currentUser.email };
-                    const result = await secure.post('/jwt', userEmail);
-                    console.log(result.data);
-                } catch (error) {
-                    console.error("Error fetching JWT:", error);
+            try {
+                if (currentUser) {
+                    await secure.post('/jwt', loggedUser);
+                } else {
+                    await secure.post('/logout', loggedUser);
                 }
             }
+            catch (error) {
+                console.log(error)
+            }
+
         })
 
         return () => {
