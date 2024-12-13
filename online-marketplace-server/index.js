@@ -91,7 +91,7 @@ async function run() {
         })
 
 
-        
+
         app.get('/jobs', async (req, res) => {
 
             let query = {};
@@ -148,8 +148,8 @@ async function run() {
         // Route for querying bids by email
         app.get('/bids', verifyToken, async (req, res) => {
 
-            if(req.user?.email !== req.query?.email){
-                return res.status(403).send({message: "Forbidden"})
+            if (req.query?.email !== req.user?.email) {
+                return res.status(403).send({ message: "Forbidden" })
             }
 
             let query = {};
@@ -164,7 +164,12 @@ async function run() {
 
 
         // Route for querying bids by buyer_info.email
-        app.get('/bids/buyer', async (req, res) => {
+        app.get('/bids/buyer', verifyToken, async (req, res) => {
+
+            if (req.query?.email !== req.user?.email) {
+                return res.status(403).send({ message: "Forbidden" })
+            }
+
 
             let query = {};
             if (req?.query?.email) {
