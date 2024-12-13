@@ -27,7 +27,7 @@ const JobCategoriesTab = () => {
         jobDatas();
     }, []);
 
-    console.log(jobs)
+
     return (
         <section className='py-14'>
             <div className='container mx-auto'>

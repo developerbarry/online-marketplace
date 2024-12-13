@@ -1,6 +1,7 @@
 const express = require("express");
 const app = express();
 const cors = require("cors");
+const jwt = require("jsonwebtoken");
 const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 require('dotenv').config()
 const port = process.env.PORT || 5000;
@@ -8,13 +9,17 @@ const port = process.env.PORT || 5000;
 const corsOptions = {
     origin: ['http://localhost:5173'],
     credentials: true,
-    optionsSuccessStatus: 200
+    // optionsSuccessStatus: 200
 
 }
 
 //middleware
-app.use(cors());
+app.use(cors(corsOptions));
 app.use(express.json());
+
+
+
+//JWT Middleware
 
 
 
@@ -37,6 +42,21 @@ async function run() {
         const database = client.db('marketplaceDB');
         const jobs = database.collection('jobs')
         const bids = database.collection('bids')
+
+
+        app.post('/jwt', async (req, res) => {
+            const userEmail = req.body;
+            const token = jwt.sign(userEmail, process.env.TOKEN_SECRECT, { expiresIn: '1d' });
+            res.cookie('token', token, {
+                httpOnly: true,
+                secure: process.env.NODE_ENV === "production",
+                sameSite: process.env.NODE_ENV === "production" ? "none" : "strict",
+                maxAge: 24 * 60 * 60 * 1000
+                // path: '/'
+            })
+
+            res.send(token)
+        })
 
         app.get('/jobs', async (req, res) => {
 

@@ -2,10 +2,12 @@ import AuthContext from "../context/AuthContext";
 import { createUserWithEmailAndPassword, onAuthStateChanged, signInWithEmailAndPassword, signOut } from "firebase/auth";
 import auth from "../firebase/firebase.config";
 import { useEffect, useState } from "react";
+import useAxiosSecure from "../useAxiosSecure/useAxiosSecure";
 
 const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(null);
     const [loading, setLoading] = useState(true)
+    const secure = useAxiosSecure();
 
     const userSignUp = (email, password) => {
         setLoading(true)
@@ -24,9 +26,19 @@ const AuthProvider = ({ children }) => {
 
 
     useEffect(() => {
-        const unSubscribe = onAuthStateChanged(auth, currentUser => {
+        const unSubscribe = onAuthStateChanged(auth, async (currentUser) => {
             setUser(currentUser);
             setLoading(false)
+
+            if (currentUser) {
+                try {
+                    const userEmail = { email: currentUser.email };
+                    const result = await secure.post('/jwt', userEmail);
+                    console.log(result.data);
+                } catch (error) {
+                    console.error("Error fetching JWT:", error);
+                }
+            }
         })
 
         return () => {
