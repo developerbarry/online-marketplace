@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import useAxiosSecure from "../../useAxiosSecure/useAxiosSecure";
 import useAuth from "../../hookes/useAuth";
 import toast, { Toaster } from 'react-hot-toast';
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import Loder from "../../privateRoute/Loder";
 
 
@@ -10,6 +10,7 @@ const BidRequests = () => {
     const { user } = useAuth();
     // const [bids, setBids] = useState([]);
     const secure = useAxiosSecure();
+    const queryClient = useQueryClient();
 
 
     const { data: bids = [], error: queryError, isError: isQueryError, isLoading: isQueryLoading, refetch } = useQuery({
@@ -29,7 +30,12 @@ const BidRequests = () => {
             toast.success("Updated");
 
             //Manually refetch the data after mutation success
-            refetch();
+            // refetch();
+
+            // or
+            
+            //Invalidate and refetch
+            queryClient.invalidateQueries({queryKey: ['bids']})
         }
     })
 
