@@ -2,7 +2,8 @@ import { useEffect, useState } from "react";
 import useAxiosSecure from "../../useAxiosSecure/useAxiosSecure";
 import useAuth from "../../hookes/useAuth";
 import toast, { Toaster } from 'react-hot-toast';
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import Loder from "../../privateRoute/Loder";
 
 
 const BidRequests = () => {
@@ -10,15 +11,36 @@ const BidRequests = () => {
     // const [bids, setBids] = useState([]);
     const secure = useAxiosSecure();
 
-    const { data: bids = [], error, isError, isLoading } = useQuery({
-        queryKey: ['bids'], queryFn: async () => {
+
+    const { data: bids = [], error: queryError, isError: isQueryError, isLoading: isQueryLoading } = useQuery({
+        queryKey: ['bids', user?.email], queryFn: async () => {
             const result = await secure.get(`/bids/buyer?email=${user?.email}`);
             return result.data;
         }
     })
 
-  
-    console.log(bids)
+
+    const { mutateAsync, isLoading: isMutationLoading, isError: isMutationError, error: mutationError } = useMutation({
+        mutationFn: async ({ id, status }) => {
+            const result = await secure.patch(`/bid/${id}`, { status })
+            return result.data
+        },
+        onSuccess: () => {
+            toast.success("Updated");
+
+        }
+    })
+
+
+    if (isQueryLoading || isMutationLoading) {
+        return <Loder />; // Show loading state if either query or mutation is loading
+    }
+
+    if (isQueryError || isMutationError) {
+        // Handle errors from either query or mutation
+        return toast.error(queryError?.message || mutationError?.message || "An error occurred");
+    }
+
 
 
     // useEffect(() => {
@@ -43,27 +65,13 @@ const BidRequests = () => {
 
     const handleAccept = async (id, prevStatus, status) => {
 
+        console.log(id, prevStatus, status)
         if (prevStatus === status) {
             toast.error("Already Accepted")
             return;
         }
 
-        try {
-            const result = await secure.patch(`/bid/${id}`, { status })
-            console.log(result.data)
-            if (result.data.modifiedCount > 0) {
-                const remaining = bids.filter(bid => bid._id !== id);
-                const match = bids.find(bid => bid._id === id);
-                match.status = 'In Progress';
-                const newBids = [match, ...remaining]
-                setBids(newBids)
-
-                toast.success("Accepted")
-            }
-        }
-        catch (error) {
-            toast.error('Something went wrong!')
-        }
+        await mutateAsync({ id, status })
     }
 
 
