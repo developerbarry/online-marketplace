@@ -12,7 +12,7 @@ const BidRequests = () => {
     const secure = useAxiosSecure();
 
 
-    const { data: bids = [], error: queryError, isError: isQueryError, isLoading: isQueryLoading } = useQuery({
+    const { data: bids = [], error: queryError, isError: isQueryError, isLoading: isQueryLoading, refetch } = useQuery({
         queryKey: ['bids', user?.email], queryFn: async () => {
             const result = await secure.get(`/bids/buyer?email=${user?.email}`);
             return result.data;
@@ -28,6 +28,8 @@ const BidRequests = () => {
         onSuccess: () => {
             toast.success("Updated");
 
+            //Manually refetch the data after mutation success
+            refetch();
         }
     })
 
@@ -40,27 +42,6 @@ const BidRequests = () => {
         // Handle errors from either query or mutation
         return toast.error(queryError?.message || mutationError?.message || "An error occurred");
     }
-
-
-
-    // useEffect(() => {
-    //     const bidRequests = async () => {
-    //         try {
-    //             const result = await secure.get(`/bids/buyer?email=${user?.email}`)
-    //             // console.log(result.data)
-    //             setBids(result.data)
-    //         }
-    //         catch (error) {
-    //             toast.error("Something went Wrong!")
-    //         }
-    //     }
-
-    //     if (user?.email) {
-    //         bidRequests()
-    //     }
-    // }, [user?.email])
-
-    // console.log(bids)
 
 
     const handleAccept = async (id, prevStatus, status) => {
@@ -81,21 +62,7 @@ const BidRequests = () => {
             return;
         }
 
-        try {
-
-            const result = await secure.patch(`/bid/${id}`, { status })
-            if (result.data.modifiedCount > 0) {
-                const remaining = bids.filter(bid => bid._id !== id);
-                const match = bids.find(bid => bid._id === id);
-                match.status = 'Rejected';
-                const newBids = [match, ...remaining]
-                setBids(newBids)
-                toast.success("Rejected")
-            }
-        }
-        catch (error) {
-            toast.error("Something went wrong")
-        }
+        await mutateAsync({ id, status })
     }
 
 
