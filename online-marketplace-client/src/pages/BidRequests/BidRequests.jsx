@@ -2,31 +2,43 @@ import { useEffect, useState } from "react";
 import useAxiosSecure from "../../useAxiosSecure/useAxiosSecure";
 import useAuth from "../../hookes/useAuth";
 import toast, { Toaster } from 'react-hot-toast';
+import { useQuery } from "@tanstack/react-query";
 
 
 const BidRequests = () => {
     const { user } = useAuth();
-    const [bids, setBids] = useState([]);
+    // const [bids, setBids] = useState([]);
     const secure = useAxiosSecure();
 
-    useEffect(() => {
-        const bidRequests = async () => {
-            try {
-                const result = await secure.get(`/bids/buyer?email=${user?.email}`)
-                // console.log(result.data)
-                setBids(result.data)
-            }
-            catch (error) {
-                toast.error("Something went Wrong!")
-            }
+    const { data: bids = [], error, isError, isLoading } = useQuery({
+        queryKey: ['bids'], queryFn: async () => {
+            const result = await secure.get(`/bids/buyer?email=${user?.email}`);
+            return result.data;
         }
+    })
 
-        if (user?.email) {
-            bidRequests()
-        }
-    }, [user?.email])
-
+  
     console.log(bids)
+
+
+    // useEffect(() => {
+    //     const bidRequests = async () => {
+    //         try {
+    //             const result = await secure.get(`/bids/buyer?email=${user?.email}`)
+    //             // console.log(result.data)
+    //             setBids(result.data)
+    //         }
+    //         catch (error) {
+    //             toast.error("Something went Wrong!")
+    //         }
+    //     }
+
+    //     if (user?.email) {
+    //         bidRequests()
+    //     }
+    // }, [user?.email])
+
+    // console.log(bids)
 
 
     const handleAccept = async (id, prevStatus, status) => {
@@ -62,7 +74,7 @@ const BidRequests = () => {
         }
 
         try {
-            
+
             const result = await secure.patch(`/bid/${id}`, { status })
             if (result.data.modifiedCount > 0) {
                 const remaining = bids.filter(bid => bid._id !== id);
