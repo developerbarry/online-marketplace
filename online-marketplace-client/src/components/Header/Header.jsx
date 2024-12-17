@@ -31,7 +31,7 @@ const Header = () => {
                         </Link>
                         <nav className="hidden md:block space-x-6">
                             <NavLink to={'/'} className="text-gray-600 text-base font-medium hover:text-blue-600">Home</NavLink>
-                            <a href="#" className="text-gray-600 text-base font-medium hover:text-blue-600">About</a>
+                            <Link to={'/jobs'} className="text-gray-600 text-base font-medium hover:text-blue-600">All Jobs</Link>
                             <a href="#" className="text-gray-600 text-base font-medium hover:text-blue-600">Blog</a>
                             <a href="#" className="text-gray-600 text-base font-medium hover:text-blue-600">Pages</a>
                             <a href="#" className="text-gray-600 text-base font-medium hover:text-blue-600">Cart (0)</a>
@@ -81,7 +81,7 @@ const Header = () => {
                                     <NavLink to={'/'} className="block p-3 text-base font-semibold text-[#3e454c] hover:bg-blue-50 hover:text-blue-600 rounded">Home</NavLink>
                                 </li>
                                 <li className="mb-1">
-                                    <NavLink className="block p-3 text-base font-semibold text-[#3e454c] hover:bg-blue-50 hover:text-blue-600 rounded">About</NavLink>
+                                    <NavLink to={'/jobs'} className="block p-3 text-base font-semibold text-[#3e454c] hover:bg-blue-50 hover:text-blue-600 rounded">All Jobs</NavLink>
                                 </li>
                                 <li className="mb-1">
                                     <NavLink className="block p-3 text-base font-semibold text-[#3e454c] hover:bg-blue-50 hover:text-blue-600 rounded">Blog</NavLink>
