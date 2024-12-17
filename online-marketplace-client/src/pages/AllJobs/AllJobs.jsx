@@ -8,7 +8,28 @@ const AllJobs = () => {
     const [itemsPerPage, setItemsPerPage] = useState(4)
 
 
-   
+    const numberOfPages = Math.ceil(counts / itemsPerPage);
+    const pages = [...Array(numberOfPages).keys()]
+    console.log(pages)
+
+
+
+    useEffect(() => {
+        const allItems = async () => {
+            try {
+                const result = await secure.get('/jobs-count')
+                setCounts(result.data.result)
+            }
+            catch (error) {
+                console.log(error)
+            }
+        }
+
+        allItems()
+    }, [])
+
+
+    console.log(counts)
 
 
     return (
