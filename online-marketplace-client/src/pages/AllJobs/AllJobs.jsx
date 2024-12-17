@@ -9,6 +9,7 @@ const AllJobs = () => {
     const [counts, setCounts] = useState(0)
     const [currentPage, setCurrentPage] = useState(0)
     const [itemsPerPage, setItemsPerPage] = useState(4)
+    const [categoryName, setCategoryName] = useState('')
 
 
     const numberOfPages = Math.ceil(counts / itemsPerPage);
@@ -19,8 +20,9 @@ const AllJobs = () => {
     useEffect(() => {
         const jobs = async () => {
             try {
-                const result = await secure.get(`/jobs?page=${currentPage}&size=${itemsPerPage}`)
+                const result = await secure.get(`/jobs?page=${currentPage}&size=${itemsPerPage}&filter=${categoryName}`)
                 setItemJobs(result.data)
+                
             }
             catch (error) {
                 console.log(error)
@@ -28,15 +30,16 @@ const AllJobs = () => {
         }
 
         jobs()
-    }, [currentPage, itemsPerPage])
+    }, [currentPage, itemsPerPage, categoryName])
 
     console.log(itemJobs)
 
     useEffect(() => {
         const allItems = async () => {
             try {
-                const result = await secure.get('/jobs-count')
+                const result = await secure.get(`/jobs-count?filter=${categoryName}`)
                 setCounts(result.data.result)
+                setCurrentPage(0)
             }
             catch (error) {
                 console.log(error)
@@ -44,24 +47,25 @@ const AllJobs = () => {
         }
 
         allItems()
-    }, [])
+    }, [categoryName])
 
-
-    console.log(counts)
 
 
     const handlePreviousBtn = () => {
-        if(currentPage > 0){
+        if (currentPage > 0) {
             setCurrentPage(currentPage - 1)
         }
     }
 
 
     const handleNextBtn = () => {
-        if(currentPage < pages.length - 1){
+        if (currentPage < pages.length - 1) {
             setCurrentPage(currentPage + 1)
         }
     }
+
+    console.log(categoryName)
+
 
 
     return (
@@ -74,6 +78,11 @@ const AllJobs = () => {
                                 <select
                                     name='category'
                                     id='category'
+                                    onChange={(e) => {
+                                        const cate = e.target.value;
+                                        setCategoryName(cate)
+                                    }}
+                                    value={categoryName}
                                     className='border p-4 rounded-lg'
                                 >
                                     <option value=''>Filter By Category</option>
@@ -124,9 +133,9 @@ const AllJobs = () => {
                     </div>
 
                     <div className='flex justify-center mt-12'>
-                        <button 
-                        onClick={handlePreviousBtn}
-                        className='px-4 py-2 mx-1 text-gray-700 disabled:text-gray-500 capitalize bg-gray-200 rounded-md disabled:cursor-not-allowed disabled:hover:bg-gray-200 disabled:hover:text-gray-500 hover:bg-blue-500  hover:text-white'>
+                        <button
+                            onClick={handlePreviousBtn}
+                            className='px-4 py-2 mx-1 text-gray-700 disabled:text-gray-500 capitalize bg-gray-200 rounded-md disabled:cursor-not-allowed disabled:hover:bg-gray-200 disabled:hover:text-gray-500 hover:bg-blue-500  hover:text-white'>
                             <div className='flex items-center -mx-1'>
                                 <svg
                                     xmlns='http://www.w3.org/2000/svg'
@@ -157,9 +166,9 @@ const AllJobs = () => {
                             </button>
                         ))}
 
-                        <button 
-                        onClick={handleNextBtn}
-                        className='px-4 py-2 mx-1 text-gray-700 transition-colors duration-300 transform bg-gray-200 rounded-md hover:bg-blue-500 disabled:hover:bg-gray-200 disabled:hover:text-gray-500 hover:text-white disabled:cursor-not-allowed disabled:text-gray-500'>
+                        <button
+                            onClick={handleNextBtn}
+                            className='px-4 py-2 mx-1 text-gray-700 transition-colors duration-300 transform bg-gray-200 rounded-md hover:bg-blue-500 disabled:hover:bg-gray-200 disabled:hover:text-gray-500 hover:text-white disabled:cursor-not-allowed disabled:text-gray-500'>
                             <div className='flex items-center -mx-1'>
                                 <span className='mx-1'>Next</span>
 

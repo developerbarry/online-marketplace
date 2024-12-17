@@ -94,12 +94,14 @@ async function run() {
 
         app.get('/jobs', async (req, res) => {
 
+            console.log(req.query)
             const page = parseInt(req.query.page);
             const size = parseInt(req.query.size);
+            const categoryName = req.query?.filter;
 
             let query = {};
-            if (req.query?.email) {
-                query = { 'buyer_info.email': req.query.email }
+            if (categoryName) {
+                query = { job_categories: categoryName }
             }
 
             const cursor = jobs.find(query).skip(page * size).limit(size);
@@ -111,7 +113,12 @@ async function run() {
 
         // All Jobs Counts
         app.get('/jobs-count', async (req, res) => {
-            const result = await jobs.countDocuments();
+
+            let query = {};
+            if (req.query?.filter) {
+                query = { job_categories: req.query?.filter }
+            }
+            const result = await jobs.countDocuments(query);
             res.send({ result })
         })
 
