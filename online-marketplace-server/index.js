@@ -104,6 +104,16 @@ async function run() {
             res.send(result)
         })
 
+
+
+        // All Jobs Counts
+        app.get('/jobs-count', async (req, res) => {
+            const result = await jobs.countDocuments();
+            res.send({result})
+        })
+
+
+
         // Get individual job
         app.get('/job/:id', async (req, res) => {
             const id = req.params.id;
@@ -217,6 +227,7 @@ async function run() {
             const result = await bids.insertOne(bid);
             res.send(result)
         })
+
 
 
 
