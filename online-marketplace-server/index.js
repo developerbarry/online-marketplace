@@ -94,12 +94,15 @@ async function run() {
 
         app.get('/jobs', async (req, res) => {
 
+            const page = parseInt(req.query.page);
+            const size = parseInt(req.query.size);
+
             let query = {};
             if (req.query?.email) {
                 query = { 'buyer_info.email': req.query.email }
             }
 
-            const cursor = jobs.find(query);
+            const cursor = jobs.find(query).skip(page * size).limit(size);
             const result = await cursor.toArray();
             res.send(result)
         })
@@ -109,7 +112,7 @@ async function run() {
         // All Jobs Counts
         app.get('/jobs-count', async (req, res) => {
             const result = await jobs.countDocuments();
-            res.send({result})
+            res.send({ result })
         })
 
 
