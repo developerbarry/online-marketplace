@@ -201,6 +201,19 @@ async function run() {
         // Apply bid 
         app.post('/bid', async (req, res) => {
             const bid = req.body;
+
+            //Check if the job already applied;
+
+            const alreadyApplied = await bids.findOne({
+                jobId: bid?.jobId,
+                email: bid?.email
+            })
+
+            if (alreadyApplied) {
+                return res.status(400).send('You have already Applied')
+            }
+
+
             const result = await bids.insertOne(bid);
             res.send(result)
         })

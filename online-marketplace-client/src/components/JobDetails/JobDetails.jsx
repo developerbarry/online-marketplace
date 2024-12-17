@@ -17,7 +17,7 @@ const JobDetails = () => {
 
     let timeLeft;
     if (job?.deadline) {
-        timeLeft = formatDistanceToNow(new Date(job?.deadline), { addSuffix: true });
+        timeLeft = new Date(job?.deadline).toLocaleDateString();
 
     }
 
@@ -45,6 +45,7 @@ const JobDetails = () => {
 
         const form = new FormData(e.currentTarget);
         const job_title = job?.job_title;
+        const jobId = param?.id;
         const name = form.get('name');
         const email = user?.email;
         const price = form.get('price');
@@ -81,7 +82,7 @@ const JobDetails = () => {
             return;
         }
 
-        const newBid = { job_title, name, email, bidPrice, dateline, bid_message, job_category, buyer_info, status };
+        const newBid = { job_title, jobId, name, email, bidPrice, dateline, bid_message, job_category, buyer_info, status };
 
         try {
             const result = await secure.post('/bid', newBid);
@@ -90,7 +91,10 @@ const JobDetails = () => {
                 navigate('/my-bids')
             }
         } catch (error) {
-            toast.error('Something went wrong!');
+            console.log(error)
+            toast.error(error.response.data)
+
+            e.target.reset();
         }
     }
 
@@ -105,7 +109,7 @@ const JobDetails = () => {
                         <h2 className="text-2xl font-semibold text-gray-800 capitalize lg:text-3xl mb-2">
                             {job?.job_title}
                         </h2>
-                        <p className="text-gray-500 text-sm mb-4">Posted {timeLeft} ago • Worldwide</p>
+                        <p className="text-gray-500 text-sm mb-4">{timeLeft} • Worldwide</p>
                         <p className="text-gray-600 text-sm md:text-base mb-4">
                             {job?.description}
                         </p>
