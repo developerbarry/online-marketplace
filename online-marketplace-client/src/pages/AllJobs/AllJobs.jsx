@@ -108,6 +108,14 @@ const AllJobs = () => {
                             </div>
                         </button>
 
+                        {pages.map(btnNum => (
+                            <button
+                                key={btnNum}
+                                className={`hidden px-4 py-2 mx-1 transition-colors duration-300 transform  rounded-md border sm:inline hover:bg-blue-500  hover:text-white`}
+                            >
+                                {btnNum}
+                            </button>
+                        ))}
 
                         <button className='px-4 py-2 mx-1 text-gray-700 transition-colors duration-300 transform bg-gray-200 rounded-md hover:bg-blue-500 disabled:hover:bg-gray-200 disabled:hover:text-gray-500 hover:text-white disabled:cursor-not-allowed disabled:text-gray-500'>
                             <div className='flex items-center -mx-1'>
