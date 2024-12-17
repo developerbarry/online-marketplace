@@ -98,13 +98,19 @@ async function run() {
             const page = parseInt(req.query.page);
             const size = parseInt(req.query.size);
             const categoryName = req.query?.filter;
+            const sort = req.query?.sort;
 
             let query = {};
             if (categoryName) {
                 query = { job_categories: categoryName }
             }
 
-            const cursor = jobs.find(query).skip(page * size).limit(size);
+            let options = {};
+            if (sort) {
+                options = { sort: { deadline: sort === 'asc' ? 1 : -1 } }
+            }
+
+            const cursor = jobs.find(query, options).skip(page * size).limit(size);
             const result = await cursor.toArray();
             res.send(result)
         })

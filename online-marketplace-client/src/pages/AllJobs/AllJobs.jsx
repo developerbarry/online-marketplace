@@ -5,11 +5,12 @@ import JobCard from "../../components/JobCard/JobCard";
 const AllJobs = () => {
 
     const secure = useAxiosCommon();
-    const [itemJobs, setItemJobs] = useState([])
-    const [counts, setCounts] = useState(0)
-    const [currentPage, setCurrentPage] = useState(0)
-    const [itemsPerPage, setItemsPerPage] = useState(4)
-    const [categoryName, setCategoryName] = useState('')
+    const [itemJobs, setItemJobs] = useState([]);
+    const [counts, setCounts] = useState(0);
+    const [currentPage, setCurrentPage] = useState(0);
+    const [itemsPerPage, setItemsPerPage] = useState(4);
+    const [categoryName, setCategoryName] = useState('');
+    const [sort, setSort] = useState('');
 
 
     const numberOfPages = Math.ceil(counts / itemsPerPage);
@@ -20,7 +21,7 @@ const AllJobs = () => {
     useEffect(() => {
         const jobs = async () => {
             try {
-                const result = await secure.get(`/jobs?page=${currentPage}&size=${itemsPerPage}&filter=${categoryName}`)
+                const result = await secure.get(`/jobs?page=${currentPage}&size=${itemsPerPage}&filter=${categoryName}&sort=${sort}`)
                 setItemJobs(result.data)
                 
             }
@@ -30,7 +31,7 @@ const AllJobs = () => {
         }
 
         jobs()
-    }, [currentPage, itemsPerPage, categoryName])
+    }, [currentPage, itemsPerPage, categoryName, sort])
 
     console.log(itemJobs)
 
@@ -64,7 +65,7 @@ const AllJobs = () => {
         }
     }
 
-    console.log(categoryName)
+    console.log(sort)
 
 
 
@@ -110,6 +111,8 @@ const AllJobs = () => {
                             <div>
                                 <select
                                     name='category'
+                                    onChange={(e) => setSort(e.target.value)}
+                                    value={sort}
                                     id='Job_category'
                                     className='border p-4 rounded-md'
                                 >
