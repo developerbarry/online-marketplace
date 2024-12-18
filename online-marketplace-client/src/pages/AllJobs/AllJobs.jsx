@@ -11,6 +11,7 @@ const AllJobs = () => {
     const [itemsPerPage, setItemsPerPage] = useState(4);
     const [categoryName, setCategoryName] = useState('');
     const [sort, setSort] = useState('');
+    const [searchText, setSearchText] = useState('')
 
 
     const numberOfPages = Math.ceil(counts / itemsPerPage);
@@ -21,7 +22,7 @@ const AllJobs = () => {
     useEffect(() => {
         const jobs = async () => {
             try {
-                const result = await secure.get(`/jobs?page=${currentPage}&size=${itemsPerPage}&filter=${categoryName}&sort=${sort}`)
+                const result = await secure.get(`/jobs?page=${currentPage}&size=${itemsPerPage}&filter=${categoryName}&sort=${sort}&search=${searchText}`)
                 setItemJobs(result.data)
                 
             }
@@ -31,14 +32,14 @@ const AllJobs = () => {
         }
 
         jobs()
-    }, [currentPage, itemsPerPage, categoryName, sort])
+    }, [currentPage, itemsPerPage, categoryName, sort, searchText])
 
     console.log(itemJobs)
 
     useEffect(() => {
         const allItems = async () => {
             try {
-                const result = await secure.get(`/jobs-count?filter=${categoryName}`)
+                const result = await secure.get(`/jobs-count?filter=${categoryName}&search=${searchText}`)
                 setCounts(result.data.result)
                 setCurrentPage(0)
             }
@@ -48,7 +49,7 @@ const AllJobs = () => {
         }
 
         allItems()
-    }, [categoryName])
+    }, [categoryName, searchText])
 
 
 
@@ -65,7 +66,6 @@ const AllJobs = () => {
         }
     }
 
-    console.log(sort)
 
 
 
@@ -93,7 +93,9 @@ const AllJobs = () => {
                                 </select>
                             </div>
 
-                            <form>
+                            <form
+                            onSubmit={handleSearch}
+                            > 
                                 <div className='flex p-1 overflow-hidden border rounded-lg    focus-within:ring focus-within:ring-opacity-40 focus-within:border-blue-400 focus-within:ring-blue-300'>
                                     <input
                                         className='px-6 py-2 text-gray-700 placeholder-gray-500 bg-white outline-none focus:placeholder-transparent'
@@ -121,7 +123,7 @@ const AllJobs = () => {
                                     <option value='asc'>Ascending Order</option>
                                 </select>
                             </div>
-                            <button className='btn border p-4 rounded-md'>Reset</button>
+                            <button onClick={handleReset} className='btn border p-4 rounded-md'>Reset</button>
                         </div>
                         <div className='grid grid-cols-1 md:grid-cols-2 gap-6 mt-8'>
                             {
