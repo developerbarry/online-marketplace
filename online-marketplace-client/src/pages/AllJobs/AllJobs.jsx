@@ -67,6 +67,15 @@ const AllJobs = () => {
     }
 
 
+    const handleSearch = (e) => {
+        e.preventDefault();
+
+        const searchValue = e.target.search.value;
+        setSearchText(searchValue);
+    }
+
+
+
 
 
     return (
