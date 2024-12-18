@@ -75,7 +75,12 @@ const AllJobs = () => {
     }
 
 
+    const handleReset = () => {
+        setCategoryName('');
+        setSort('');
+        setSearchText('')
 
+    }
 
 
     return (
