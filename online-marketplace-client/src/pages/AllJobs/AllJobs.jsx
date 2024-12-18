@@ -146,11 +146,6 @@ const AllJobs = () => {
                         </div>
                     </div>
 
-
-                    <div>
-                        <p>Current Page: {currentPage}</p>
-                    </div>
-
                     <div className='flex justify-center mt-12'>
                         <button
                             onClick={handlePreviousBtn}
